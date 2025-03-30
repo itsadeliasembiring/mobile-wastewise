@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Menu/menu.dart';
+// import '../Autentikasi/Autentikasi.dart';
+import '../Autentikasi/autentikasi.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  void _goToMenu() {
+  void _goToAutentikasi() {
     setState(() {
       _opacity = 0.0; // Fade out saat ditap
     });
@@ -28,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration(milliseconds: 500), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Menu()), // Pindah ke Menu
+        MaterialPageRoute(builder: (context) => Autentikasi()), // Pindah ke Autentikasi
       );
     });
   }
@@ -38,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: _goToMenu, // Pindah ke Menu setelah fade out
+        onTap: _goToAutentikasi, // Pindah ke Autentikasi setelah fade out
         child: AnimatedOpacity(
           duration: Duration(milliseconds: 500),
           opacity: _opacity,
