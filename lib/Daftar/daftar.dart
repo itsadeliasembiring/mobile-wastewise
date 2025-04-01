@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Daftar extends StatefulWidget {
   @override
@@ -37,7 +38,12 @@ class _DaftarState extends State<Daftar> {
   void _register() {
     if (!_isPrivacyChecked) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Harap setujui Kebijakan Privasi!')),
+        SnackBar(
+          content: Text(
+            'Harap setujui Kebijakan Privasi!',
+            style: GoogleFonts.montserrat(),
+          ),
+        ),
       );
       return;
     }
@@ -66,11 +72,11 @@ class _DaftarState extends State<Daftar> {
                   padding: const EdgeInsets.only(left: 4.0, top: 12.0),
                   child: GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.arrow_back, size: 28.0),
+                    child: Icon(Icons.arrow_back, size: 28.0),
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: 15),
 
               Expanded(
                 child: SingleChildScrollView(
@@ -79,23 +85,25 @@ class _DaftarState extends State<Daftar> {
                     children: [
                       // Gambar Maskot
                       Image.asset('assets/maskot_with_circle.png', height: 150),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
                       // Judul
-                      const Text(
+                      Text(
                         'Buat Akun\nWasteWarriors!',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF3D8D7A),
-                        ),
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF3D8D7A),
+                          ),
+                        )
                       ),
-                      const SizedBox(height: 22),
+                      SizedBox(height: 22),
 
                       // Input Nama Lengkap
                       _buildTextField(controller: _nameController, hint: "Nama Lengkap"),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // Dropdown Jenis Kelamin
                       _buildDropdownField(
@@ -108,23 +116,23 @@ class _DaftarState extends State<Daftar> {
                           });
                         },
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // Picker Tanggal Lahir
                       _buildDateField(),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // Input Alamat
                       _buildTextField(controller: _addressController, hint: "Alamat Lengkap"),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // Input Nomor Telepon
                       _buildTextField(controller: _phoneController, hint: "Nomor Telepon"),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // Input Email
                       _buildTextField(controller: _emailController, hint: "Email"),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // Input Password
                       _buildPasswordField(
@@ -137,7 +145,7 @@ class _DaftarState extends State<Daftar> {
                           });
                         },
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // Input Konfirmasi Password
                       _buildPasswordField(
@@ -150,28 +158,43 @@ class _DaftarState extends State<Daftar> {
                           });
                         },
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // Checkbox Kebijakan Privasi
                       Row(
                         children: [
-                          Checkbox(
-                            value: _isPrivacyChecked,
-                            onChanged: (value) {
-                              setState(() {
+                          Transform.scale(
+                            scale: 1.1,
+                            child: Checkbox(
+                              value: _isPrivacyChecked,
+                              activeColor: Color(0xFF3D8D7A),
+                              checkColor: Colors.white,
+                              onChanged: (value) {
+                                setState(() {
                                 _isPrivacyChecked = value!;
-                              });
-                            },
+                                });
+                              },
+                            ),
                           ),
-                          const Text("Saya telah membaca"),
+                          Text(
+                            "Saya telah membaca",
+                            style: GoogleFonts.montserrat(
+                              color: Color(0xFFA1A4B2),
+                              fontSize: 13),
+                          ),
                           TextButton(
                             onPressed: () {},
-                            child: const Text("Kebijakan Privasi",
-                                style: TextStyle(color: Colors.green)),
+                            child: Text("Kebijakan Privasi",
+                                style: GoogleFonts.montserrat(
+                                  color: Color(0xFF2DCC70),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500
+                                ),
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 80),
+                      SizedBox(height: 80),
 
                       // Tombol Daftar
                       SizedBox(
@@ -179,19 +202,22 @@ class _DaftarState extends State<Daftar> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF3D8D7A),
+                            backgroundColor: Color(0xFF3D8D7A),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                           onPressed: _register,
-                          child: const Text(
+                          child: Text(
                             'Daftar',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: GoogleFonts.montserrat(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600, 
+                              color: Colors.white),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
                     ],
                   ),
                 ),
@@ -206,10 +232,12 @@ class _DaftarState extends State<Daftar> {
   Widget _buildTextField({required TextEditingController controller, required String hint}) {
     return TextField(
       controller: controller,
+      style: GoogleFonts.montserrat(),
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: GoogleFonts.montserrat(color: Color(0xFFA1A4B2), fontSize: 14, fontWeight: FontWeight.w500),
         filled: true,
-        fillColor: const Color(0xFFF2F3F7),
+        fillColor: Color(0xFFF2F3F7),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
@@ -220,18 +248,23 @@ class _DaftarState extends State<Daftar> {
 
   Widget _buildDropdownField({required String hint, required List<String> items, String? value, required Function(String?) onChanged}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-        color: const Color(0xFFF2F3F7),
+        color: Color(0xFFF2F3F7),
         borderRadius: BorderRadius.circular(15),
       ),
       child: DropdownButton<String>(
         isExpanded: true,
         value: value,
-        hint: Text(hint),
+        hint: Text(hint,
+         style: GoogleFonts.montserrat(
+          fontSize: 14,
+          color: Color(0xFFA1A4B2),
+          fontWeight: FontWeight.w500,
+         )),
         underline: Container(),
         onChanged: onChanged,
-        items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+        items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: GoogleFonts.montserrat()))).toList(),
       ),
     );
   }
@@ -239,9 +272,25 @@ class _DaftarState extends State<Daftar> {
   Widget _buildDateField() {
     return GestureDetector(
       onTap: _pickDate,
-      child: _buildTextField(
-        controller: TextEditingController(text: _selectedDate == null ? "Tanggal Lahir" : _selectedDate.toString().split(' ')[0]),
-        hint: "Tanggal Lahir",
+      child: TextField(
+        controller: TextEditingController(
+          text: _selectedDate == null
+           ? "Tanggal Lahir"
+            : _selectedDate.toString().split(' ')[0]
+        ),
+        enabled: false,
+        style: GoogleFonts.montserrat(fontSize: 14, color: Color(0xFFA1A4B2), fontWeight: FontWeight.w500),
+        decoration: InputDecoration(
+          hintText: "Tanggal Lahir",
+          hintStyle: GoogleFonts.montserrat(fontSize: 14, color:Colors.black),
+          filled: true,
+          fillColor: Color(0xFFF2F3F7),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none,
+          ),
+          suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
+        ),
       ),
     );
   }
@@ -252,6 +301,7 @@ class _DaftarState extends State<Daftar> {
       obscureText: isObscure,
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: GoogleFonts.montserrat(color: Color(0xFFA1A4B2), fontWeight: FontWeight.w500, fontSize: 14),
         filled: true,
         fillColor: const Color(0xFFF2F3F7),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),

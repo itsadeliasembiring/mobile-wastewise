@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Masuk extends StatefulWidget {
   @override
@@ -68,13 +69,15 @@ class _MasukState extends State<Masuk> {
                     const SizedBox(height: 20),
 
                     // Judul
-                    const Text(
+                    Text(
                       'Halo,\nWasteWarriors!',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 34,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF3D8D7A),
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                          fontSize: 34,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF3D8D7A),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30.0),
@@ -89,7 +92,10 @@ class _MasukState extends State<Masuk> {
                       autofillHints: [AutofillHints.email],
                       decoration: InputDecoration(
                         hintText: 'Email',
-                        hintStyle: const TextStyle(color: Color(0xFFA1A4B2)),
+                        hintStyle: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          color: Color(0xFFA1A4B2)
+                        ),
                         filled: true,
                         fillColor: const Color(0xFFF2F3F7),
                         border: OutlineInputBorder(
@@ -106,7 +112,10 @@ class _MasukState extends State<Masuk> {
                       obscureText: _isObscure,
                       decoration: InputDecoration(
                         hintText: 'Password',
-                        hintStyle: const TextStyle(color: Color(0xFFA1A4B2)),
+                        hintStyle: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          color: Color(0xFFA1A4B2)
+                          ),
                         filled: true,
                         fillColor: const Color(0xFFF2F3F7),
                         border: OutlineInputBorder(
@@ -140,37 +149,51 @@ class _MasukState extends State<Masuk> {
                           ),
                         ),
                         onPressed: _login,
-                        child: const Text(
+                        child: Text(
                           'Masuk',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: GoogleFonts.montserrat(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15.0),
+                    const SizedBox(height: 18.0),
 
                     // Lupa Password
                     TextButton(
                       onPressed: _forgotPassword,
-                      child: const Text(
+                      child: Text(
                         'Lupa password?',
-                        style: TextStyle(color: Color(0xFFA1A4B2)),
+                        style: GoogleFonts.montserrat(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFFA1A4B2)
+                          ),
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 60.0),
 
                     // Daftar Sekarang
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           'Belum memiliki akun?',
-                          style: TextStyle(color: Color(0xFFA1A4B2)),
+                          style: GoogleFonts.montserrat(
+                            fontSize: 13,
+                            color: Color(0xFFA1A4B2)
+                          ),
                         ),
                         TextButton(
                           onPressed: _register,
-                          child: const Text(
+                          child: Text(
                             'Daftar Sekarang',
-                            style: TextStyle(color: Color(0xFF2DCC70)),
+                            style: GoogleFonts.montserrat(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF2DCC70)
+                            ),
                           ),
                         ),
                       ],

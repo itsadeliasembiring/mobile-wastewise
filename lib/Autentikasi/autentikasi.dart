@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Autentikasi extends StatelessWidget {
   @override
@@ -6,33 +7,37 @@ class Autentikasi extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Gambar Maskot
-              Image.asset('assets/maskot_with_circle.png', height: 220),
-              const SizedBox(height: 20),
+              Image.asset('assets/maskot_with_circle.png', height: 230),
+              const SizedBox(height: 35),
 
               // Judul "Selamat Datang"
-              const Text(
+              Text(
                 'Selamat Datang',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF3D8D7A),
+                style: GoogleFonts.montserrat(
+                  textStyle: TextStyle(
+                    fontSize: 34,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF3D8D7A),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
 
               // Subjudul
-              const Text(
-                'Bijak mengelola sampah,\nHidup lebih berkah',
+              Text(
+                'Bijak mengelola sampah,\nHidup lebih berkah!',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF8CB8A6),
+                style: GoogleFonts.montserrat(
+                  textStyle: TextStyle(
+                    fontSize: 17,
+                    color: Color(0xFF80D48F),
+                  ),
                 ),
               ),
               const SizedBox(height: 40),
@@ -51,9 +56,12 @@ class Autentikasi extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, '/login');
                   },
-                  child: const Text(
+                  child: Text(
                     'Masuk',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
                   ),
                 ),
               ),
@@ -73,28 +81,42 @@ class Autentikasi extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, '/register');
                   },
-                  child: const Text(
+                  child: Text(
                     'Daftar',
-                    style: TextStyle(fontSize: 18, color: Color(0xFF3D8D7A)),
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600, 
+                      color: Color(0xFF3D8D7A)),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 23),
 
               // Persetujuan Kebijakan Privasi
-              const Text.rich(
+              Text.rich(
                 TextSpan(
                   text: 'Dengan masuk atau mendaftar, Anda menyetujui ',
-                  style: TextStyle(fontSize: 12, color: Color(0xFFA1A4B2)),
+                    style: GoogleFonts.montserrat(
+                    fontSize: 10,
+                    color: const Color(0xFFA1A4B2),
+                  ),
                   children: [
                     TextSpan(
-                      text: 'Persyaratan Layanan',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF3D8D7A)),
+                      text: '\nPersyaratan Layanan',
+                      style: GoogleFonts.montserrat(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF80D48F),
+                      ),
                     ),
-                    TextSpan(text: ' dan '),
+                    const TextSpan(text: ' dan '),
                     TextSpan(
                       text: 'Kebijakan Privasi',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF3D8D7A)),
+                      style: GoogleFonts.montserrat(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF80D48F),
+                      ),
                     ),
                   ],
                 ),
