@@ -1,9 +1,28 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Beranda extends StatelessWidget {
+class Beranda extends StatefulWidget {
+  @override
+  _BerandaState createState() => _BerandaState();
+}
+
+class _BerandaState extends State<Beranda> {
+  int index = 4;
+
+  final screens = [
+    
+  ];
+  
   @override
   Widget build(BuildContext context) {
+    final items = <Widget> [
+      Icon(Icons.home, size: 30, color: Color(0xFF3D8D7A)),
+      Icon(Icons.history, size: 30, color: Color(0xFF3D8D7A)),
+      Icon(Icons.account_circle, size: 30, color: Color(0xFF3D8D7A)),
+      Icon(Icons.settings, size: 30, color: Color(0xFF3D8D7A)),
+      Icon(Icons.notifications, size: 30, color: Color(0xFF3D8D7A)),
+    ];
 
     return Scaffold(
       backgroundColor: Color(0xFFF5F6FA),
@@ -268,6 +287,14 @@ class Beranda extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: CurvedNavigationBar(
+        index: index,
+        items: items,
+        height: 70,
+        onTap: (index) => setState(() => this.index = index),
+        backgroundColor: Colors.transparent,
+        buttonBackgroundColor: Color(0xFF3D8D7A),
+        ),
     );
   }
 }
