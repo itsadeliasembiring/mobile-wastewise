@@ -49,166 +49,91 @@ class Artikel extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF3D8D7A),
-        onPressed: () {
-          print("FAB Diklik");
-        },
-        tooltip: 'Cari Artikel',
-        elevation: 4,
-        child: Icon(Icons.search, color: Colors.white),
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: ListView.builder(
         padding: EdgeInsets.all(16),
         itemCount: artikelList.length,
         itemBuilder: (context, index) {
           final artikel = artikelList[index];
-          if (index == 0) {
-            // Custom promo card untuk artikel pertama
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailArtikelPage(
-                      title: artikel["title"]!,
-                      content: artikel["subtitle"]!,
-                      date: artikel["date"]!,
-                      image: artikel["image"]!,
-                    ),
+
+          // Semua kartu artikel sama
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailArtikelPage(
+                    title: artikel["title"]!,
+                    content: artikel["subtitle"]!,
+                    date: artikel["date"]!,
+                    image: artikel["image"]!,
                   ),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFF2F5E9),
-                  borderRadius: BorderRadius.circular(16),
                 ),
-                padding: EdgeInsets.all(16),
-                margin: EdgeInsets.only(bottom: 16),
-                child: Column(
-                  children: [
-                    Image.asset(
+              );
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              margin: EdgeInsets.only(bottom: 16),
+              elevation: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(12)),
+                    child: Image.asset(
                       artikel["image"]!,
-                      height: 80,
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      artikel["title"]!,
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      artikel["subtitle"]!,
-                      style: GoogleFonts.montserrat(
-                        fontSize: 14,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      artikel["date"]!,
-                      style: GoogleFonts.montserrat(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          } else {
-            // Kartu artikel biasa
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailArtikelPage(
-                      title: artikel["title"]!,
-                      content: artikel["subtitle"]!,
-                      date: artikel["date"]!,
-                      image: artikel["image"]!,
+                      width: double.infinity,
+                      height: 150,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                );
-              },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                margin: EdgeInsets.only(bottom: 16),
-                elevation: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.asset(
-                        artikel["image"]!,
-                        width: double.infinity,
-                        height: 150,
-                        fit: BoxFit.cover,
-                      ),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          artikel["title"]!,
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          artikel["subtitle"]!,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 14,
+                            color: Colors.black87,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          artikel["date"]!,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            artikel["title"]!,
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            artikel["subtitle"]!,
-                            style: GoogleFonts.montserrat(
-                              fontSize: 14,
-                              color: Colors.black87,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            artikel["date"]!,
-                            style: GoogleFonts.montserrat(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          }
+            ),
+          );
         },
       ),
     );
   }
 }
-
-  /// Bottom Navigation Bar
 
 class DetailArtikelPage extends StatelessWidget {
   final String title;
