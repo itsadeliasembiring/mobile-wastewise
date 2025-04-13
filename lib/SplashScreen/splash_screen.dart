@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import '../Autentikasi/Autentikasi.dart';
 import '../Autentikasi/autentikasi.dart';
 
 class SplashScreen extends StatefulWidget {

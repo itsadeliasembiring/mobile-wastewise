@@ -49,8 +49,11 @@ class Autentikasi extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.pushNamed(context, '/form-login');
                   },
+                  // onPressed: () {
+                  //   Navigator.pushReplacementNamed(context, '/menu'); // Pindah ke Menu
+                  // },
                   child: const Text(
                     'Masuk',
                     style: TextStyle(fontSize: 18, color: Colors.white),
@@ -71,7 +74,7 @@ class Autentikasi extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/register');
+                    Navigator.pushNamed(context, '/form-register');
                   },
                   child: const Text(
                     'Daftar',

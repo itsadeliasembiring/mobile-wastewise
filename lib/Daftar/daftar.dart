@@ -12,7 +12,8 @@ class _DaftarState extends State<Daftar> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  
+  final TextEditingController _dateController = TextEditingController();
+
   String? _selectedGender;
   DateTime? _selectedDate;
   bool _isObscure = true;
@@ -30,17 +31,77 @@ class _DaftarState extends State<Daftar> {
     if (pickedDate != null) {
       setState(() {
         _selectedDate = pickedDate;
+        // Format tanggal menjadi dd-MM-yyyy
+        _dateController.text =
+            "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
       });
     }
   }
 
   void _register() {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red, 
+          content: Text(
+            'Password dan konfirmasi tidak cocok!',
+            style: TextStyle(color: Colors.white), 
+          ),
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_emailController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red, 
+          content: Text(
+            'Format email tidak valid!',
+            style: TextStyle(color: Colors.white), 
+          ),
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
     if (!_isPrivacyChecked) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Harap setujui Kebijakan Privasi!')),
       );
       return;
     }
+
+    if (_nameController.text.isEmpty ||
+        _selectedGender == null ||
+        _selectedDate == null ||
+        _addressController.text.isEmpty ||
+        _phoneController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Harap lengkapi semua data!')),
+      );
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(         
+      SnackBar(
+        backgroundColor: Color(0xFF3D8D7A),
+        content: Text(
+          'Pendaftaran berhasil!',
+          style: TextStyle(color: Colors.white), 
+        ),
+        duration: Duration(seconds: 3),
+      ),
+    );
+
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.pushReplacementNamed(context, '/menu');
+    });
 
     print("Nama: ${_nameController.text}");
     print("Jenis Kelamin: $_selectedGender");
@@ -59,7 +120,6 @@ class _DaftarState extends State<Daftar> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Tombol Kembali
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -71,17 +131,13 @@ class _DaftarState extends State<Daftar> {
                 ),
               ),
               const SizedBox(height: 15),
-
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Gambar Maskot
                       Image.asset('assets/maskot_with_circle.png', height: 150),
                       const SizedBox(height: 20),
-
-                      // Judul
                       const Text(
                         'Buat Akun\nWasteWarriors!',
                         textAlign: TextAlign.center,
@@ -92,12 +148,8 @@ class _DaftarState extends State<Daftar> {
                         ),
                       ),
                       const SizedBox(height: 22),
-
-                      // Input Nama Lengkap
                       _buildTextField(controller: _nameController, hint: "Nama Lengkap"),
                       const SizedBox(height: 12),
-
-                      // Dropdown Jenis Kelamin
                       _buildDropdownField(
                         hint: "Jenis Kelamin",
                         value: _selectedGender,
@@ -109,24 +161,14 @@ class _DaftarState extends State<Daftar> {
                         },
                       ),
                       const SizedBox(height: 12),
-
-                      // Picker Tanggal Lahir
                       _buildDateField(),
                       const SizedBox(height: 12),
-
-                      // Input Alamat
                       _buildTextField(controller: _addressController, hint: "Alamat Lengkap"),
                       const SizedBox(height: 12),
-
-                      // Input Nomor Telepon
                       _buildTextField(controller: _phoneController, hint: "Nomor Telepon"),
                       const SizedBox(height: 12),
-
-                      // Input Email
                       _buildTextField(controller: _emailController, hint: "Email"),
                       const SizedBox(height: 12),
-
-                      // Input Password
                       _buildPasswordField(
                         controller: _passwordController,
                         hint: "Password",
@@ -138,8 +180,6 @@ class _DaftarState extends State<Daftar> {
                         },
                       ),
                       const SizedBox(height: 12),
-
-                      // Input Konfirmasi Password
                       _buildPasswordField(
                         controller: _confirmPasswordController,
                         hint: "Konfirmasi Password",
@@ -151,17 +191,21 @@ class _DaftarState extends State<Daftar> {
                         },
                       ),
                       const SizedBox(height: 12),
-
-                      // Checkbox Kebijakan Privasi
                       Row(
                         children: [
-                          Checkbox(
-                            value: _isPrivacyChecked,
-                            onChanged: (value) {
-                              setState(() {
-                                _isPrivacyChecked = value!;
-                              });
-                            },
+                          Theme(
+                            data: ThemeData(
+                              unselectedWidgetColor: Color(0xFF3D8D7A),
+                            ),
+                            child: Checkbox(
+                              value: _isPrivacyChecked,
+                              activeColor: Color(0xFF3D8D7A),
+                              onChanged: (value) {
+                                setState(() {
+                                  _isPrivacyChecked = value!;
+                                });
+                              },
+                            ),
                           ),
                           const Text("Saya telah membaca"),
                           TextButton(
@@ -172,8 +216,6 @@ class _DaftarState extends State<Daftar> {
                         ],
                       ),
                       const SizedBox(height: 80),
-
-                      // Tombol Daftar
                       SizedBox(
                         width: double.infinity,
                         height: 50,
@@ -218,7 +260,12 @@ class _DaftarState extends State<Daftar> {
     );
   }
 
-  Widget _buildDropdownField({required String hint, required List<String> items, String? value, required Function(String?) onChanged}) {
+  Widget _buildDropdownField({
+    required String hint,
+    required List<String> items,
+    String? value,
+    required Function(String?) onChanged,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
@@ -237,16 +284,28 @@ class _DaftarState extends State<Daftar> {
   }
 
   Widget _buildDateField() {
-    return GestureDetector(
+    return TextField(
+      controller: _dateController,
+      readOnly: true,
       onTap: _pickDate,
-      child: _buildTextField(
-        controller: TextEditingController(text: _selectedDate == null ? "Tanggal Lahir" : _selectedDate.toString().split(' ')[0]),
-        hint: "Tanggal Lahir",
+      decoration: InputDecoration(
+        hintText: "Tanggal Lahir",
+        filled: true,
+        fillColor: const Color(0xFFF2F3F7),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
       ),
     );
   }
 
-  Widget _buildPasswordField({required TextEditingController controller, required String hint, required bool isObscure, required Function toggleObscure}) {
+  Widget _buildPasswordField({
+    required TextEditingController controller,
+    required String hint,
+    required bool isObscure,
+    required Function toggleObscure,
+  }) {
     return TextField(
       controller: controller,
       obscureText: isObscure,
@@ -254,8 +313,14 @@ class _DaftarState extends State<Daftar> {
         hintText: hint,
         filled: true,
         fillColor: const Color(0xFFF2F3F7),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
-        suffixIcon: IconButton(icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility), onPressed: () => toggleObscure()),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility),
+          onPressed: () => toggleObscure(),
+        ),
       ),
     );
   }

@@ -1,12 +1,11 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import '../Beranda/beranda.dart';
-import '../SetorSampah/setor_sampah.dart';
+import '../SetorSampah/pilih_bank_sampah.dart';
 import '../Edukasi/edukasi.dart';
 import '../TukarPoint/tukar_point.dart';
 import '../Profil/profil.dart';
-
 
 class Menu extends StatefulWidget {
   @override
@@ -15,53 +14,63 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
-  int index = 0;
+  int _currentIndex = 0;
 
-  final screens = [
+  final List<Widget> _screens = [
     Beranda(),
-    SetorSampah(),
+    PilihBankSampah(),
     Edukasi(),
     TukarPoint(),
     Profil(),
   ];
 
+  final List<IconData> _icons = [
+    Icons.home_rounded,
+    Icons.recycling_rounded,
+    Icons.search_rounded,
+    Icons.stars_rounded,
+    Icons.account_circle_rounded,
+  ];
+
+  final List<String> _labels = [
+    "Beranda",
+    "Setor Sampah",
+    "Edukasi",
+    "Poin",
+    "Profil",
+  ];
+
   @override
   Widget build(BuildContext context) {
-
-    final items = List.generate(5, (i) => Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          [Icons.home_rounded, Icons.recycling_rounded, Icons.search_rounded, Icons.stars_rounded, Icons.account_circle_rounded][i],
-          size: 30,
-          color: index == i ? Colors.white : Color(0xFF3D8D7A), // Change color when selected
-        ),
-        if (index != i) // Hide label when selected
-          Text(
-            ["Beranda", "Setor Sampah", "Edukasi", "Poin", "Profil"][i],
-            style: TextStyle(fontSize: 12, color: Color(0xFF3D8D7A)),
-          ),
-      ],
-    ));
-
-
-    return SafeArea(
-      top: false,
-      child: 
-        Scaffold(
-          backgroundColor: Color(0xFFF5F6FA),
-          body: screens[index],
-          bottomNavigationBar: 
-          CurvedNavigationBar(
-            key: navigationKey,
-            index: index,
-            items: items,
-            height: 65,
-            onTap: (index) => setState(() => this.index = index),
-            backgroundColor: Colors.transparent,
-            buttonBackgroundColor: Color(0xFF3D8D7A),
-          ),
-        )
+    return Scaffold(
+      backgroundColor: Color(0xFFF5F6FA),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        key: navigationKey,
+        index: _currentIndex,
+        items: List.generate(_icons.length, (i) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              _icons[i],
+              size: 30,
+              color: _currentIndex == i ? Colors.white : Color(0xFF3D8D7A),
+            ),
+            if (_currentIndex != i)
+              Text(
+                _labels[i],
+                style: TextStyle(fontSize: 12, color: Color(0xFF3D8D7A)),
+              ),
+          ],
+        )),
+        height: 65,
+        onTap: (index) => setState(() => _currentIndex = index),
+        backgroundColor: Colors.transparent,
+        buttonBackgroundColor: Color(0xFF3D8D7A),
+      ),
     );
   }
 }

@@ -1,5 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../Edukasi/edukasi.dart';
+import '../SetorSampah/riwayat_setor_sampah.dart';
+import '../SetorSampah/pilih_bank_sampah.dart';
+
+
+final List<Map<String, String>> wasteBankData = [
+  {
+    'name': 'Bank Sampah Mulyorejo Tengah',
+    'address': 'Jl. Mulyorejo Tengah No. 67',
+    'distance': '1.4 KM',
+    'imagePath': 'assets/default-bank-sampah.png',
+  },
+  {
+    'name': 'Bank Sampah Kalijudan',
+    'address': 'Jl. Kalijudan V No. 33D',
+    'distance': '2.8 KM',
+    'imagePath': 'assets/default-bank-sampah.png',
+  },
+  {
+    'name': 'Bank Sampah Jojoran 1',
+    'address': 'Jl. Jojoran 1 Blok Z No. 101',
+    'distance': '3.9 KM',
+    'imagePath': 'assets/default-bank-sampah.png',
+  },
+];
 
 class Beranda extends StatelessWidget {
   @override
@@ -52,7 +77,7 @@ class Beranda extends StatelessWidget {
               ),
               color: Color(0xFFA3D1C6),
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -87,12 +112,32 @@ class Beranda extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: 10),
-                          Text(
-                            'Tukar Poin!',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child:   
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) => const RiwayatSetorSampah(),
+                                      transitionDuration: Duration.zero,
+                                      reverseTransitionDuration: Duration.zero,
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFFD6EFD8),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  minimumSize: Size(70, 30), 
+                                ),
+                                child: Text(
+                                  '5 Kg Sampah Terkumpul',
+                                  style: TextStyle(color: Color(0xFF3D8D7A), fontSize: 12),
+                                ),
+                              ),
                           ),
                         ],
                       ),
@@ -104,23 +149,6 @@ class Beranda extends StatelessWidget {
                           width: 100,
                           height: 100,
                           fit: BoxFit.contain,
-                        ),
-                        SizedBox(height: 8),
-                        ElevatedButton(
-                          onPressed: () {
-                            print('Button clicked!');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFFD6EFD8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                          ),
-                          child: Text(
-                            '5 Kg Sampah Terkumpul',
-                            style: TextStyle(color: Colors.black, fontSize: 12),
-                          ),
                         ),
                       ],
                     ),
@@ -135,7 +163,14 @@ class Beranda extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      print('Setor Sampah Clicked!');
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const PilihBankSampah(),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ),
+                      );
                     },
                     child: Card(
                       elevation: 4,
@@ -144,13 +179,13 @@ class Beranda extends StatelessWidget {
                       ),
                       color: Color(0xFFD6EFD8),
                       child: Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           children: [
                             Image.asset(
                               'assets/icon-setor-sampah.png',
-                              width: 40,
-                              height: 40,
+                              width: 30,
+                              height: 30,
                               fit: BoxFit.contain,
                             ),
                             SizedBox(width: 10),
@@ -170,7 +205,7 @@ class Beranda extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 15),
+                SizedBox(width: 7),
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
@@ -183,19 +218,19 @@ class Beranda extends StatelessWidget {
                       ),
                       color: Color(0xFFD6EFD8),
                       child: Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           children: [
                             Image.asset(
                               'assets/icon-kenali-sampah.png',
-                              width: 40,
-                              height: 40,
+                              width: 30,
+                              height: 30,
                               fit: BoxFit.contain,
                             ),
                             SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                'Kenali Sampah',
+                                'Kenal Sampah',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Color(0xFF3D8D7A),
@@ -212,59 +247,132 @@ class Beranda extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-
             Card(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Lokasi Bank Sampah Terdekat',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF3D8D7A),
-                        ),
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Lokasi Bank Sampah Terdekat',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF3D8D7A),
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Ubah sampah jadi berkah lewat bank sampah!',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF666666),
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      WasteBankCard(
-                        name: 'Bank Sampah Mulyorejo',
-                        address: 'Jl. Mulyorejo Tengah No. 67',
-                        distance: '1.4 KM',
-                        imagePath: 'assets/default-bank-sampah.png',
-                      ),
-                      SizedBox(height: 12),
-                      WasteBankCard(
-                        name: 'Bank Sampah Kalijudan',
-                        address: 'Jl. Kalijudan V No. 33D',
-                        distance: '2.8 KM',
-                        imagePath: 'assets/default-bank-sampah.png',
-                      ),
-                      SizedBox(height: 12),
-                      WasteBankCard(
-                        name: 'Bank Sampah Jojoran 1',
-                        address: 'Jl. Jojoran 1 Blok Z No. 101',
-                        distance: '3.9 KM',
-                        imagePath: 'assets/default-bank-sampah.png',
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 4),
+                    // Text(
+                    //   'Ubah sampah jadi berkah lewat bank sampah!',
+                    //   style: TextStyle(
+                    //     fontSize: 14,
+                    //     color: Color(0xFF666666),
+                    //   ),
+                    // ),
+                    
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(), 
+                      itemCount: wasteBankData.length,
+                      itemBuilder: (context, index) {
+                        final wasteBank = wasteBankData[index];
+                        return Column(
+                          children: [
+                            WasteBankCard(
+                              name: wasteBank['name']!,
+                              address: wasteBank['address']!,
+                              distance: wasteBank['distance']!,
+                              imagePath: wasteBank['imagePath']!,
+                            ),
+                            SizedBox(height: 10), // Jarak antar item
+                          ],
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
+            ),
+              SizedBox(height: 10),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                color: Colors.white,
+                elevation: 4,
+                child: 
+                  Padding(
+                    padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0, bottom: 7),
+                    child: 
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Left side - Image
+                              Container(
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  child: Image.asset(
+                                    'assets/default-bank-sampah.png', // Replace with your actual image path
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              // Right side - Content
+                              Expanded(
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      // Title
+                                      const Text(
+                                        'WasteWise: Inovasi Aplikasi Bank Sampah untuk Lingkungan Lebih Bersih',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      
+                                      // Read More Button
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child:   
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              print('Button clicked!');
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(0xFFD6EFD8),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(15),
+                                              ),
+                                              minimumSize: Size(100, 30), 
+                                            ),
+                                            child: Text(
+                                              'Baca Selengkapnya',
+                                              style: TextStyle(color: Color(0xFF3D8D7A), fontSize: 12),
+                                            ),
+                                          ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                  )   
+              )
           ],
         ),
       ),
@@ -318,6 +426,8 @@ class WasteBankCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -326,6 +436,8 @@ class WasteBankCard extends StatelessWidget {
                     color: Color(0xFF666666),
                     fontSize: 12,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

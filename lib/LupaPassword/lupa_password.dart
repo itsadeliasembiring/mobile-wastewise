@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 
-class Masuk extends StatefulWidget {
+class LupaPassword extends StatefulWidget {
   @override
-  _MasukState createState() => _MasukState();
+  _LupaPasswordState createState() => _LupaPasswordState();
 }
 
-class _MasukState extends State<Masuk> {
+class _LupaPasswordState extends State<LupaPassword> {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _isObscure = true;
+  bool _isLoading = false;
 
-  void _login() {
+  void _resetPassword() {
     String email = _emailController.text;
-    String password = _passwordController.text;
 
-    if (email.isEmpty || password.isEmpty) {
+    if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red, 
           content: Text(
-            'Email dan Password harus diisi!',
+            'Email harus diisi!',
             style: TextStyle(color: Colors.white), 
           ),
           duration: Duration(seconds: 3),
@@ -27,7 +25,8 @@ class _MasukState extends State<Masuk> {
       );
       return;
     }
-    //  Validasi format email
+    
+    // Validasi format email
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -42,44 +41,30 @@ class _MasukState extends State<Masuk> {
       return;
     }
 
-    // print('Email: $email');
-    // print('Password: $password');
+    setState(() {
+      _isLoading = true;
+    });
 
-    if (email == 'adeltrisna@gmail.com' && password == 'password123') {
-      ScaffoldMessenger.of(context).showSnackBar(         
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+      
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Color(0xFF3D8D7A),
+          backgroundColor: Colors.green, 
           content: Text(
-            'Pendaftaran berhasil!',
+            'Link reset password telah dikirim ke email Anda!',
             style: TextStyle(color: Colors.white), 
           ),
           duration: Duration(seconds: 3),
         ),
       );
-
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pushReplacementNamed(context, '/menu');
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red, 
-            content: Text(
-              'Email atau password salah!',
-              style: TextStyle(color: Colors.white), 
-            ),
-            duration: Duration(seconds: 3),
-          ),
-      );
-    }
+    });
   }
 
-  void _forgotPassword() {
-    Navigator.pushReplacementNamed(context, '/form-lupa-password');
-  }
-
-  void _register() {
-    Navigator.pushReplacementNamed(context, '/form-register');
+  void _backToLogin() {
+    Navigator.pushReplacementNamed(context, '/form-login');
   }
 
   @override
@@ -89,7 +74,6 @@ class _MasukState extends State<Masuk> {
       body: SafeArea(
         child: Column(
           children: [
-            // Tombol Kembali
             Align(
               alignment: Alignment.topLeft,
               child: Padding(
@@ -112,12 +96,23 @@ class _MasukState extends State<Masuk> {
 
                     // Judul
                     const Text(
-                      'Halo,\nWasteWarriors!',
+                      'Lupa Password?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 34,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3D8D7A),
+                      ),
+                    ),
+                    const SizedBox(height: 15.0),
+                    
+                    // Deskripsi
+                    const Text(
+                      'Masukkan alamat email yang terdaftar untuk mendapatkan link reset password',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFFA1A4B2),
                       ),
                     ),
                     const SizedBox(height: 30.0),
@@ -126,7 +121,7 @@ class _MasukState extends State<Masuk> {
                     TextField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       autocorrect: false,
                       textCapitalization: TextCapitalization.none,
                       autofillHints: [AutofillHints.email],
@@ -141,37 +136,9 @@ class _MasukState extends State<Masuk> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 30.0),
 
-                    // Input Password
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: _isObscure,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        hintStyle: const TextStyle(color: Color(0xFFA1A4B2)),
-                        filled: true,
-                        fillColor: const Color(0xFFF2F3F7),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide.none,
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isObscure ? Icons.visibility_off : Icons.visibility,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20.0),
-
-                    // Tombol Masuk
+                    // Tombol Reset Password
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -182,37 +149,29 @@ class _MasukState extends State<Masuk> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        onPressed: _login,
-                        child: const Text(
-                          'Masuk',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15.0),
-
-                    // Lupa Password
-                    TextButton(
-                      onPressed: _forgotPassword,
-                      child: const Text(
-                        'Lupa password?',
-                        style: TextStyle(color: Color(0xFFA1A4B2)),
+                        onPressed: _isLoading ? null : _resetPassword,
+                        child: _isLoading
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text(
+                                'Kirim Link Reset',
+                                style: TextStyle(fontSize: 18, color: Colors.white),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 20.0),
 
-                    // Daftar Sekarang
+                    // Kembali ke Halaman Login
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          'Belum memiliki akun?',
+                          'Ingat password?',
                           style: TextStyle(color: Color(0xFFA1A4B2)),
                         ),
                         TextButton(
-                          onPressed: _register,
+                          onPressed: _backToLogin,
                           child: const Text(
-                            'Daftar Sekarang',
+                            'Kembali ke Login',
                             style: TextStyle(color: Color(0xFF2DCC70)),
                           ),
                         ),
