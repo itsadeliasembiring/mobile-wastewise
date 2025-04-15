@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Daftar extends StatefulWidget {
   @override
@@ -69,7 +70,12 @@ class _DaftarState extends State<Daftar> {
 
     if (!_isPrivacyChecked) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Harap setujui Kebijakan Privasi!')),
+        SnackBar(
+          content: Text(
+            'Harap setujui Kebijakan Privasi!',
+            style: GoogleFonts.montserrat(),
+          ),
+        ),
       );
       return;
     }
@@ -126,7 +132,7 @@ class _DaftarState extends State<Daftar> {
                   padding: const EdgeInsets.only(left: 4.0, top: 12.0),
                   child: GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.arrow_back, size: 28.0),
+                    child: Icon(Icons.arrow_back, size: 28.0),
                   ),
                 ),
               ),
@@ -138,14 +144,16 @@ class _DaftarState extends State<Daftar> {
                     children: [
                       Image.asset('assets/maskot_with_circle.png', height: 150),
                       const SizedBox(height: 20),
-                      const Text(
+                      Text(
                         'Buat Akun\nWasteWarriors!',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF3D8D7A),
-                        ),
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF3D8D7A),
+                          ),
+                        )
                       ),
                       const SizedBox(height: 22),
                       _buildTextField(controller: _nameController, hint: "Nama Lengkap"),
@@ -207,11 +215,15 @@ class _DaftarState extends State<Daftar> {
                               },
                             ),
                           ),
-                          const Text("Saya telah membaca"),
                           TextButton(
                             onPressed: () {},
-                            child: const Text("Kebijakan Privasi",
-                                style: TextStyle(color: Colors.green)),
+                            child: Text("Kebijakan Privasi",
+                                style: GoogleFonts.montserrat(
+                                  color: Color(0xFF2DCC70),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500
+                                ),
+                            ),
                           ),
                         ],
                       ),
@@ -221,19 +233,22 @@ class _DaftarState extends State<Daftar> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF3D8D7A),
+                            backgroundColor: Color(0xFF3D8D7A),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                           onPressed: _register,
-                          child: const Text(
+                          child: Text(
                             'Daftar',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: GoogleFonts.montserrat(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600, 
+                              color: Colors.white),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
                     ],
                   ),
                 ),
@@ -248,10 +263,12 @@ class _DaftarState extends State<Daftar> {
   Widget _buildTextField({required TextEditingController controller, required String hint}) {
     return TextField(
       controller: controller,
+      style: GoogleFonts.montserrat(),
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: GoogleFonts.montserrat(color: Color(0xFFA1A4B2), fontSize: 14, fontWeight: FontWeight.w500),
         filled: true,
-        fillColor: const Color(0xFFF2F3F7),
+        fillColor: Color(0xFFF2F3F7),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
@@ -267,18 +284,23 @@ class _DaftarState extends State<Daftar> {
     required Function(String?) onChanged,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-        color: const Color(0xFFF2F3F7),
+        color: Color(0xFFF2F3F7),
         borderRadius: BorderRadius.circular(15),
       ),
       child: DropdownButton<String>(
         isExpanded: true,
         value: value,
-        hint: Text(hint),
+        hint: Text(hint,
+         style: GoogleFonts.montserrat(
+          fontSize: 14,
+          color: Color(0xFFA1A4B2),
+          fontWeight: FontWeight.w500,
+         )),
         underline: Container(),
         onChanged: onChanged,
-        items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+        items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: GoogleFonts.montserrat()))).toList(),
       ),
     );
   }
@@ -311,6 +333,7 @@ class _DaftarState extends State<Daftar> {
       obscureText: isObscure,
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: GoogleFonts.montserrat(color: Color(0xFFA1A4B2), fontWeight: FontWeight.w500, fontSize: 14),
         filled: true,
         fillColor: const Color(0xFFF2F3F7),
         border: OutlineInputBorder(

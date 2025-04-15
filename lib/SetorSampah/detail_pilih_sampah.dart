@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// Import the shared WasteType class
+import 'package:mobile_wastewise/SetorSampah/barcode-jemput.dart';
 import 'waste_type.dart';
 import 'pilih_alamat.dart';
 
@@ -159,105 +159,8 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
                   color: const Color.fromARGB(255, 231, 231, 231), // Warna garis pemisah
                   thickness: 1,
                 ),
-                // const Text(
-                //   "Total",
-                //   style: TextStyle(
-                //     fontSize: 22,
-                //     fontWeight: FontWeight.w500,
-                //     color: Color(0xFF3D8D7A),
-                //   ),
-                // ),
+                
                 const SizedBox(height: 12),
-                // Summary Card
-                // Card(
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(12),
-                //   ),
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(16.0),
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           children: [
-                //             Column(
-                //               crossAxisAlignment: CrossAxisAlignment.start,
-                //               children: [
-                //                 const Text(
-                //                   "Total Jenis",
-                //                   style: TextStyle(
-                //                     color: Colors.grey,
-                //                     fontSize: 14,
-                //                   ),
-                //                 ),
-                //                 const SizedBox(height: 4),
-                //                 Text(
-                //                   "${selectedWaste.length} Jenis",
-                //                   style: const TextStyle(
-                //                     fontWeight: FontWeight.bold,
-                //                     fontSize: 16,
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //             Column(
-                //               crossAxisAlignment: CrossAxisAlignment.start,
-                //               children: [
-                //                 const Text(
-                //                   "Total Berat",
-                //                   style: TextStyle(
-                //                     color: Colors.grey,
-                //                     fontSize: 14,
-                //                   ),
-                //                 ),
-                //                 const SizedBox(height: 4),
-                //                 Text(
-                //                   "${totalQuantity % 1 == 0 ? totalQuantity.toInt() : totalQuantity.toStringAsFixed(2)} kg",
-                //                   style: const TextStyle(
-                //                     fontWeight: FontWeight.bold,
-                //                     fontSize: 16,
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //             Column(
-                //               crossAxisAlignment: CrossAxisAlignment.start,
-                //               children: [
-                //                 const Text(
-                //                   "Total Poin",
-                //                   style: TextStyle(
-                //                     color: Colors.grey,
-                //                     fontSize: 14,
-                //                   ),
-                //                 ),
-                //                 const SizedBox(height: 4),
-                //                 Row(
-                //                   children: [
-                //                     Image.asset(
-                //                       'assets/poin.png',
-                //                       width: 16,
-                //                       height: 16,
-                //                     ),
-                //                     const SizedBox(width: 4),
-                //                     Text(
-                //                       widget.totalWastePoints.toStringAsFixed(0),
-                //                       style: const TextStyle(
-                //                         fontWeight: FontWeight.bold,
-                //                         fontSize: 16,
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               ],
-                //             ),
-                //           ],
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-
                 // Summary Card
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -353,7 +256,9 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const PilihAlamat()),
+                            MaterialPageRoute(
+                              builder: (context) => const PilihAlamat(),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -376,7 +281,12 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ScanBarcode()),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3D8D7A),
                           foregroundColor: Colors.white,

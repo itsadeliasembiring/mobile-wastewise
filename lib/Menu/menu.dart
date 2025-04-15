@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../Beranda/beranda.dart';
 import '../SetorSampah/pilih_bank_sampah.dart';
-import '../Edukasi/edukasi.dart';
-import '../TukarPoint/tukar_point.dart';
+import '../Artikel/artikel.dart';
+import '../TukarPoin/tukar_poin.dart';
 import '../Profil/profil.dart';
 
 class Menu extends StatefulWidget {
@@ -16,11 +16,22 @@ class _MenuState extends State<Menu> {
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
   int _currentIndex = 0;
 
+  static _MenuState? of(BuildContext context) {
+    final state = context.findAncestorStateOfType<_MenuState>();
+    return state;
+  }
+
+  void changeTab(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   final List<Widget> _screens = [
     Beranda(),
     PilihBankSampah(),
-    Edukasi(),
-    TukarPoint(),
+    Artikel(),
+    TukarPoin(),
     Profil(),
   ];
 

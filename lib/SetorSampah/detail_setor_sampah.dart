@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_wastewise/SetorSampah/riwayat_setor_sampah.dart';
+import './riwayat_setor_sampah.dart';
 
 void main() {
   runApp(const DetailSetorSampah());
@@ -34,7 +36,7 @@ class DetailSetorSampahPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Navigate back
+            Navigator.pop(context);
           },
         ),
         title: const Text(
@@ -380,7 +382,16 @@ class DetailSetorSampahPage extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => RiwayatSetorSampah(),
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero,
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF3D8D7A),
                     padding: const EdgeInsets.symmetric(vertical: 15),

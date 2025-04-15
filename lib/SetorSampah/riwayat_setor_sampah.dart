@@ -137,7 +137,7 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) => const PilihBankSampah(),
+                          pageBuilder: (context, animation, secondaryAnimation) => PilihBankSampah(),
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,
                         ),
@@ -226,7 +226,7 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
                 itemBuilder: (context, index) {
                   final collection = collections[index];
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
+                    margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
@@ -248,24 +248,24 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
                                 decoration: BoxDecoration(
-                                  color: Colors.amber,
+                                  color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
                                   children: [
-                                    Icon(
-                                      Icons.monetization_on,
-                                      color: Colors.white,
-                                      size: 14,
+                                    Image.asset(
+                                      'assets/poin.png',
+                                      width: 18,
+                                      height: 18,
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
                                       '${collection.points} Poin',
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 14
                                       ),
                                     ),
                                   ],

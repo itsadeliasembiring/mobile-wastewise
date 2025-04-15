@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Edukasi/edukasi.dart';
+
 import '../SetorSampah/riwayat_setor_sampah.dart';
 import '../SetorSampah/pilih_bank_sampah.dart';
-
+import '../KenaliSampah/kenali_sampah.dart'; // Add import for Kenali Sampah
+import '../Artikel/artikel.dart'; // Add import for Artikel
 
 final List<Map<String, String>> wasteBankData = [
   {
@@ -33,7 +34,7 @@ class Beranda extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xFFF5F6FA),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -163,10 +164,12 @@ class Beranda extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
+                      // Navigate to PilihBankSampah page
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) => const PilihBankSampah(),
+                          pageBuilder: (context, animation, secondaryAnimation) =>
+                              const PilihBankSampah(),
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,
                         ),
@@ -178,28 +181,20 @@ class Beranda extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       color: Color(0xFFD6EFD8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/icon-setor-sampah.png',
-                              width: 30,
-                              height: 30,
-                              fit: BoxFit.contain,
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                'Setor Sampah',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF3D8D7A),
-                                ),
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ],
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        leading: Image.asset(
+                          'assets/icon-setor-sampah.png',
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.contain,
+                        ),
+                        title: Text(
+                          'Setor Sampah',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF3D8D7A),
+                          ),
                         ),
                       ),
                     ),
@@ -209,7 +204,16 @@ class Beranda extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      print('Kenali Sampah Clicked!');
+                      // Navigate to KenaliSampah page
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) =>
+                              KenaliSampah(),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ),
+                      );
                     },
                     child: Card(
                       elevation: 4,
@@ -217,28 +221,20 @@ class Beranda extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       color: Color(0xFFD6EFD8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/icon-kenali-sampah.png',
-                              width: 30,
-                              height: 30,
-                              fit: BoxFit.contain,
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                'Kenal Sampah',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF3D8D7A),
-                                ),
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ],
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        leading: Image.asset(
+                          'assets/icon-kenali-sampah.png',
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.contain,
+                        ),
+                        title: Text(
+                          'Kenal Sampah',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF3D8D7A),
+                          ),
                         ),
                       ),
                     ),
@@ -267,15 +263,16 @@ class Beranda extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 4),
-                    // Text(
-                    //   'Ubah sampah jadi berkah lewat bank sampah!',
-                    //   style: TextStyle(
-                    //     fontSize: 14,
-                    //     color: Color(0xFF666666),
-                    //   ),
-                    // ),
-                    
+                    Text(
+                      'Ubah sampah jadi berkah lewat bank sampah!',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF666666),
+                      ),
+                    ),
+                    SizedBox(height: 10),
                     ListView.builder(
+                      padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(), 
                       itemCount: wasteBankData.length,
@@ -312,7 +309,6 @@ class Beranda extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Left side - Image
                               Container(
                                 width: 80,
                                 height: 80,
@@ -329,7 +325,6 @@ class Beranda extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(width: 12),
-                              // Right side - Content
                               Expanded(
                                 child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -351,7 +346,16 @@ class Beranda extends StatelessWidget {
                                         child:   
                                           ElevatedButton(
                                             onPressed: () {
-                                              print('Button clicked!');
+                                              // Navigate to Artikel page
+                                              Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                  pageBuilder: (context, animation, secondaryAnimation) =>
+                                                      Artikel(),
+                                                  transitionDuration: Duration.zero,
+                                                  reverseTransitionDuration: Duration.zero,
+                                                ),
+                                              );
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Color(0xFFD6EFD8),

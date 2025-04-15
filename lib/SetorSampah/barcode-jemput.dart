@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'detail_setor_sampah.dart';
@@ -37,7 +38,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
 
-  // Daftar kode yang valid (contoh)
   final List<String> _validCodes = ['123456', 'ABC123', 'WASTE01', 'ECO2025'];
 
   @override
@@ -110,9 +110,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
         ),
       );
       
-      // Navigate to detail_setor_sampah.dart
-      // Since DetailSetorSampah doesn't accept a 'code' parameter based on the error,
-      // navigating without it
       Navigator.push(
         context, 
         MaterialPageRoute(
@@ -257,17 +254,44 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
     );
   }
 
+  void openWhatsAppChat() async {
+    String phone = '+6281234567890';
+    String message = Uri.encodeComponent('Halo, saya ingin menyetor sampah.');
+    final url = 'https://wa.me/$phone?text=$message';
+
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Tidak bisa membuka WhatsApp';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F6FA),
+      backgroundColor: Color(0xFFF5F6FA),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
+          },
+        ),
+        title: const Text(
+          "Scan Barcode",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Color(0xFF3D8D7A),
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            
             const SizedBox(height: 20),
-
             // QR code scanner area
             Expanded(
               child: Column(
@@ -353,30 +377,53 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                 ],
               ),
             ),
-
-            // Manual code input button
             Padding(
-              padding: const EdgeInsets.all(20),
-              child: ElevatedButton(
-                onPressed: showManualInputDialog,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3D8D7A),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: showManualInputDialog,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3D8D7A),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      minimumSize: const Size(double.infinity, 0),
+                    ),
+                    child: const Text(
+                      'Masukkan Kode',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  minimumSize: const Size(double.infinity, 0),
-                ),
-                child: const Text(
-                  'Masukkan Kode',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                  const SizedBox(height: 12), // Jarak antar tombol
+                  ElevatedButton(
+                    onPressed: openWhatsAppChat,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3D8D7A),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      minimumSize: const Size(double.infinity, 0),
+                    ),
+                    child: const Text(
+                      'Kontak Whatsapp Bank Sampah',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
+            const SizedBox(height: 20), 
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Menu/menu.dart';
 import './pilih_sampah.dart';
 import './riwayat_setor_sampah.dart';
 
@@ -78,11 +79,11 @@ class _WasteBankPageState extends State<WasteBankPage> {
       backgroundColor: Color(0xFFF5F6FA),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

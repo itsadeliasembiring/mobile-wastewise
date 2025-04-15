@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './barcode-jemput.dart';
 
 void main() {
   runApp(const PilihAlamat());
@@ -228,7 +229,12 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ScanBarcode()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3D8D7A),
                   foregroundColor: Colors.white,

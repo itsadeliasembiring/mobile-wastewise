@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import this package for input formatters
-
-// Import the DetailPilihSampah class
+import 'package:flutter/services.dart'; 
 import './detail_pilih_sampah.dart';
-// Import the shared WasteType class
 import './waste_type.dart';
 
 void main() {
@@ -16,6 +13,7 @@ class PilihSampah extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF5F6FA),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -91,7 +89,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
     super.initState();
     for (var wasteType in wasteTypes) {
       _controllers[wasteType.name] = TextEditingController(
-        text: (wasteQuantities[wasteType.name] ?? 0).toInt().toString(),
+        text: '', // Initialize with an empty string
       );
     }
   }
@@ -127,11 +125,8 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
     });
   }
 
-  // Method to navigate to the detail page
   void navigateToDetailPage() {
-    // Check if any waste is selected
     if (totalWasteTypes == 0) {
-      // Show a message if no waste is selected
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Silakan pilih minimal satu jenis sampah'),
@@ -141,7 +136,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
       return;
     }
 
-    // Navigate to the detail page
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -256,6 +250,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Allow digits and decimal point
                                 ],
                                 decoration: InputDecoration(
+                                  hintText: '0', // Set the placeholder to '0'
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -320,7 +315,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                       ],
                     ),
                     ElevatedButton(
-                      onPressed: navigateToDetailPage, // Call the navigation method here
+                      onPressed: navigateToDetailPage, 
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: const Color(0xFF3D8D7A),
