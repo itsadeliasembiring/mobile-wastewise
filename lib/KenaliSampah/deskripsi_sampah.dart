@@ -31,7 +31,6 @@ class DeskripsiSampah extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
@@ -43,7 +42,6 @@ class DeskripsiSampah extends StatelessWidget {
               ),
               SizedBox(height: 24),
               
-              // Title
               Text(
                 "Botol Plastik",
                 style: GoogleFonts.poppins(
@@ -53,7 +51,6 @@ class DeskripsiSampah extends StatelessWidget {
               ),
               SizedBox(height: 16),
               
-              // Description
               Text(
                 "Botol Plastik adalah wadah yang terbuat dari bahan polimer seperti PET (Polyethylene Terephthalate) yang sering digunakan untuk kemasan air mineral, minuman ringan, dan produk lainnya. Botol plastik banyak digunakan karena ringan, murah, dan tahan lama, namun jika tidak dikelola dengan baik, dapat mencemari lingkungan.",
                 style: GoogleFonts.poppins(
@@ -62,7 +59,7 @@ class DeskripsiSampah extends StatelessWidget {
               ),
               SizedBox(height: 24),
               
-              // Waste Type
+              
               Text(
                 "Jenis Sampah",
                 style: GoogleFonts.poppins(
@@ -79,7 +76,6 @@ class DeskripsiSampah extends StatelessWidget {
               ),
               SizedBox(height: 16),
               
-              // Waste Bin Color
               Text(
                 "Warna Tempat Sampah",
                 style: GoogleFonts.poppins(
@@ -96,7 +92,6 @@ class DeskripsiSampah extends StatelessWidget {
               ),
               SizedBox(height: 24),
               
-              // Characteristics
               Text(
                 "Ciri - ciri :",
                 style: GoogleFonts.poppins(
@@ -113,7 +108,6 @@ class DeskripsiSampah extends StatelessWidget {
               _buildBulletPoint("Mudah berubah bentuk jika terkena panas tinggi"),
               SizedBox(height: 24),
               
-              // Use cases
               Text(
                 "Pemanfaatan :",
                 style: GoogleFonts.poppins(
@@ -129,7 +123,6 @@ class DeskripsiSampah extends StatelessWidget {
               _buildNumberedPoint(5, "Pertanian: Media tanam hidroponik dan sistem irigasi tetes sederhana."),
               SizedBox(height: 32),
               
-              // Back button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

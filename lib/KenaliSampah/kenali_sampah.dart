@@ -17,7 +17,6 @@ class _KenaliSampahState extends State<KenaliSampah> {
   String _wasteType = '';
   String _errorMessage = '';
   
-  // List of waste types for manual input
   final List<String> wasteTypes = [
     'Botol Plastik',
     'Kaleng Aluminium',
@@ -66,17 +65,17 @@ class _KenaliSampahState extends State<KenaliSampah> {
           _image = File(pickedFile.path);
         });
         
-        // Simulate scanning process (in a real app, you'd use ML here)
+        // Simulasi scanning process 
         await Future.delayed(Duration(seconds: 2));
         
-        // For demo purposes, we'll assume it's always a plastic bottle
         setState(() {
           _scanning = false;
           _scanned = true;
           _wasteType = 'Botol Plastik';
         });
       } else {
-        // User canceled the camera
+
+        // User membatalkan kamera
         setState(() {
           _scanning = false;
           _errorMessage = 'Pengambilan gambar dibatalkan';
@@ -91,11 +90,11 @@ class _KenaliSampahState extends State<KenaliSampah> {
   }
 
   Future<void> _getImage() async {
-    // First check camera permission
+    // Izin kamera
     await _requestCameraPermission();
   }
   
-  // Function to show manual input bottom sheet
+  // Input manual
   void _showManualInputSheet() {
     showModalBottomSheet(
       context: context,
@@ -150,7 +149,6 @@ class _KenaliSampahState extends State<KenaliSampah> {
                         return InkWell(
                           onTap: () {
                             Navigator.pop(context);
-                            // Navigate directly to the description page
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -313,7 +311,6 @@ class _KenaliSampahState extends State<KenaliSampah> {
                           ),
                         ),
                         SizedBox(width: 16),
-                        // New Manual Input button
                         ElevatedButton(
                           onPressed: _showManualInputSheet,
                           style: ElevatedButton.styleFrom(
@@ -336,7 +333,6 @@ class _KenaliSampahState extends State<KenaliSampah> {
                       ],
                     ),
                     SizedBox(height: 16),
-                    // Gallery option
                     TextButton.icon(
                       onPressed: () async {
                         setState(() {
@@ -354,7 +350,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
                               _image = File(pickedFile.path);
                             });
                             
-                            // Simulate scanning process
+                            // Simulasi scanning process
                             await Future.delayed(Duration(seconds: 2));
                             
                             setState(() {
@@ -494,7 +490,6 @@ class _KenaliSampahState extends State<KenaliSampah> {
                             ),
                           ),
                           SizedBox(width: 16),
-                          // Add manual input option here too
                           OutlinedButton(
                             onPressed: _showManualInputSheet,
                             style: OutlinedButton.styleFrom(
@@ -546,7 +541,6 @@ class _KenaliSampahState extends State<KenaliSampah> {
                             ),
                           ),
                           SizedBox(width: 16),
-                          // Add manual input option here too
                           OutlinedButton(
                             onPressed: _showManualInputSheet,
                             style: OutlinedButton.styleFrom(

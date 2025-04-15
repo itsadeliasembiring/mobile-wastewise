@@ -61,9 +61,9 @@ class _WasteBankPageState extends State<WasteBankPage> {
   void _onSelectBank(int index) {
     setState(() {
       if (_selectedIndex == index) {
-        _selectedIndex = null; // Unselect if the same card is tapped again
+        _selectedIndex = null; 
       } else {
-        _selectedIndex = index; // Select new card
+        _selectedIndex = index; 
       }
     });
   }
@@ -110,7 +110,6 @@ class _WasteBankPageState extends State<WasteBankPage> {
                             color: Colors.amber,
                             shape: BoxShape.circle,
                           ),
-                          // child: const Icon(Icons.star, color: Colors.white, size: 16),
                           child:  Image.asset(
                                 'assets/poin.png',
                                 width: 16,
@@ -230,7 +229,7 @@ class _WasteBankPageState extends State<WasteBankPage> {
                       ),
               ),
               // Bank Sampah Terpilih di Bagian Bawah
-              if (_selectedIndex != null) // Only show selected bank if there is one
+              if (_selectedIndex != null) 
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   width: double.infinity,

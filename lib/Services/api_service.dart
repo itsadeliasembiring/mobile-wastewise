@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/transaction_model.dart';
 
 class ApiService {
-  final String baseUrl = 'https://your-api-endpoint.com/api';
+  final String baseUrl = 'https://api-endpoint.com/api';
   
   Future<bool> postTransaction(Transaction transaction) async {
     try {
@@ -28,7 +28,6 @@ class ApiService {
     }
   }
   
-  // Get total points from server
   Future<int> getTotalPoints() async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/points'));

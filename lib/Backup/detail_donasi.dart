@@ -1,34 +1,17 @@
 import 'package:flutter/material.dart';
+import './tukar_poin.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import '../Providers/points.provider.dart';
-
-class Donation {
-  final String title;
-  final String address;
-  final String description;
-  final String imageAsset;
-  final int totalDonation;
-
-  Donation({
-    required this.title,
-    required this.address,
-    required this.description,
-    required this.imageAsset,
-    required this.totalDonation,
-  });
-}
 
 class DetailDonasi extends StatefulWidget {
   final Donation donation;
   final Function(Transaction) addTransaction;
-  final int totalPoints;
+  final int totalPoints; 
 
   const DetailDonasi({
     super.key,
     required this.donation,
     required this.addTransaction,
-    required this.totalPoints,
+    required this.totalPoints, 
   });
 
   @override
@@ -54,132 +37,128 @@ class _DetailDonasiState extends State<DetailDonasi> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PointsProvider>(
-      builder: (context, pointsProvider, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('Detail Donasi',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF3D8D7A),
-                )),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Detail Donasi',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF3D8D7A),
+            )),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        backgroundColor: Colors.white,
+      ),
+      body: ListView(
+        children: [
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(
+                widget.donation.imageAsset,
+                height: 180,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  height: 180,
+                  color: const Color(0xFFA3D1C6),
+                  child: const Center(
+                    child: Icon(Icons.home, size: 80, color: Color(0xFF3D8D7A)),
+                  ),
+                ),
+              ),
             ),
-            backgroundColor: Colors.white,
           ),
-          body: ListView(
-            children: [
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    widget.donation.imageAsset,
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      height: 180,
-                      color: const Color(0xFFA3D1C6),
-                      child: const Center(
-                        child: Icon(Icons.home, size: 80, color: Color(0xFF3D8D7A)),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.donation.title,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF3D8D7A),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.donation.address,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Total Donasi',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '$donationTotal Poin',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _showDonationInputDialog();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3D8D7A),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'Donasi Sekarang',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.donation.title,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF3D8D7A),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.donation.address,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Total Donasi',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '$donationTotal Poin',
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _showDonationInputDialog(pointsProvider);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3D8D7A),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'Donasi Sekarang',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Deskripsi',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.donation.description,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black87,
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 24),
+                const Text(
+                  'Deskripsi',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 8),
+                Text(
+                  widget.donation.description,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
-  void _showDonationInputDialog(PointsProvider pointsProvider) {
+  void _showDonationInputDialog() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -263,7 +242,7 @@ class _DetailDonasiState extends State<DetailDonasi> {
                     }
 
                     Navigator.pop(context);
-                    _showConfirmationDialog(donationPoints, pointsProvider);
+                    _showConfirmationDialog(donationPoints);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF3D8D7A),
@@ -290,8 +269,8 @@ class _DetailDonasiState extends State<DetailDonasi> {
     );
   }
 
-  void _showConfirmationDialog(int points, PointsProvider pointsProvider) {
-    if (points > pointsProvider.totalPoints) {
+  void _showConfirmationDialog(int points) {
+    if (points > widget.totalPoints) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -342,7 +321,7 @@ class _DetailDonasiState extends State<DetailDonasi> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              _processDonation(points, pointsProvider);
+              _processDonation(points);
             },
             child: const Text('Donasi', style: TextStyle(color: Color(0xFF3D8D7A))),
           ),
@@ -351,32 +330,20 @@ class _DetailDonasiState extends State<DetailDonasi> {
     );
   }
 
-  void _processDonation(int points, PointsProvider pointsProvider) async {
-    try {
-      setState(() {
-        donationTotal += points;
-      });
+  void _processDonation(int points) {
+    setState(() {
+      donationTotal += points;
+    });
 
-      await pointsProvider.donatePoints(widget.donation.title, points);
+    final Transaction transaction = Transaction(
+      type: 'Donasi',
+      title: widget.donation.title,
+      points: -points,
+      dateTime: DateTime.now(),
+    );
 
-      final Transaction transaction = Transaction(
-        type: 'Donasi',
-        title: widget.donation.title,
-        points: -points,
-        dateTime: DateTime.now(),
-      );
-
-      widget.addTransaction(transaction);
-      
-      _showSuccessDialog(points);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Gagal melakukan donasi: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+    widget.addTransaction(transaction);
+    _showSuccessDialog(points);
   }
 
   void _showSuccessDialog(int points) {

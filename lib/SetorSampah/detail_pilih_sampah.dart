@@ -22,12 +22,10 @@ class DetailPilihSampah extends StatefulWidget {
 class _DetailPilihSampahState extends State<DetailPilihSampah> {
   @override
   Widget build(BuildContext context) {
-    // Calculate filtered waste items (only those with quantity > 0)
     final selectedWaste = widget.wasteTypes
         .where((waste) => (widget.wasteQuantities[waste.name] ?? 0) > 0)
         .toList();
 
-    // Calculate total quantity
     final totalQuantity = widget.wasteQuantities.values.fold(
         0.0, (previousValue, element) => previousValue + element);
 
@@ -45,7 +43,7 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView( // Make the body scrollable
+        child: SingleChildScrollView( 
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -61,11 +59,10 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
                 ),
                 const SizedBox(height: 12),
 
-                // List of selected waste items
                 ListView.builder(
                   itemCount: selectedWaste.length,
-                  shrinkWrap: true, // Prevents the ListView from taking infinite height
-                  physics: const NeverScrollableScrollPhysics(), // Disable scrolling for the ListView
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(), 
                   itemBuilder: (context, index) {
                     final wasteType = selectedWaste[index];
                     final quantity = widget.wasteQuantities[wasteType.name] ?? 0;
@@ -78,7 +75,6 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
                           children: [
-                            // Waste Image
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.asset(
@@ -104,7 +100,6 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
                             ),
                             const SizedBox(width: 12),
 
-                            // Waste Information
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,12 +151,11 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
                   },
                 ),
                 Divider(
-                  color: const Color.fromARGB(255, 231, 231, 231), // Warna garis pemisah
+                  color: const Color.fromARGB(255, 231, 231, 231),
                   thickness: 1,
                 ),
                 
                 const SizedBox(height: 12),
-                // Summary Card
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -172,7 +166,7 @@ class _DetailPilihSampahState extends State<DetailPilihSampah> {
                         color: Colors.grey.withOpacity(0.2),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: const Offset(0, 3), // changes position of shadow
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),

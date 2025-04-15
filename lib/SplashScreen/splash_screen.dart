@@ -15,20 +15,20 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(Duration(milliseconds: 500), () {
       setState(() {
-        _opacity = 1.0; // Fade in saat masuk
+        _opacity = 1.0; 
       });
     });
   }
 
   void _goToAutentikasi() {
     setState(() {
-      _opacity = 0.0; // Fade out saat ditap
+      _opacity = 0.0; 
     });
 
     Future.delayed(Duration(milliseconds: 500), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Autentikasi()), // Pindah ke Autentikasi
+        MaterialPageRoute(builder: (context) => Autentikasi()), 
       );
     });
   }
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: _goToAutentikasi, // Pindah ke Autentikasi setelah fade out
+        onTap: _goToAutentikasi,
         child: AnimatedOpacity(
           duration: Duration(milliseconds: 500),
           opacity: _opacity,

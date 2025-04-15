@@ -51,7 +51,6 @@ class DetailSetorSampahPage extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            // Success Icon
             Center(
               child: Container(
                 width: 120,
@@ -88,7 +87,6 @@ class DetailSetorSampahPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Success Message
             const Text(
               'Sampah Berhasil Di Setor!',
               style: TextStyle(
@@ -106,7 +104,6 @@ class DetailSetorSampahPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            // Points Container
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               decoration: BoxDecoration(
@@ -132,12 +129,10 @@ class DetailSetorSampahPage extends StatelessWidget {
                   ),
             ),
             const SizedBox(height: 20),
-            // Details Containers
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  // Bank Sampah
                   Container(
                     padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
@@ -188,7 +183,6 @@ class DetailSetorSampahPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  // Lokasi Penjemputan
                   Container(
                     padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
@@ -234,7 +228,6 @@ class DetailSetorSampahPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  // Waktu Penjemputan
                   Container(
                     padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
@@ -280,7 +273,6 @@ class DetailSetorSampahPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  // Rincian Sampah
                   Container(
                     padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
@@ -376,7 +368,6 @@ class DetailSetorSampahPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // OK Button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SizedBox(

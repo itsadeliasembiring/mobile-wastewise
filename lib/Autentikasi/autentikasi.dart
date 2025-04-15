@@ -56,9 +56,6 @@ class Autentikasi extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, '/form-login');
                   },
-                  // onPressed: () {
-                  //   Navigator.pushReplacementNamed(context, '/menu'); // Pindah ke Menu
-                  // },
                   child: Text(
                     'Masuk',
                     style: GoogleFonts.inter(

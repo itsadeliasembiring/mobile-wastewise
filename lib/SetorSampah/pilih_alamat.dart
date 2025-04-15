@@ -35,20 +35,17 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
   String address = 'Jl. Mulyorejo 67, Kecamatan Mulyorejo, Kelurahan Mulyorejo';
   String time = '14.00';
   
-  // Address form variables
   String selectedProvince = 'Jawa Timur';
   String selectedCity = 'Surabaya';
   String selectedDistrict = 'Mulyorejo';
   String selectedSubdistrict = 'Mulyorejo';
   String detailAddress = 'Jl. Mulyorejo 67';
   
-  // Lists for dropdown options
   final List<String> provinces = ['Jawa Timur', 'Jawa Barat', 'Jawa Tengah', 'DKI Jakarta'];
   final List<String> cities = ['Surabaya', 'Malang', 'Sidoarjo', 'Gresik'];
   final List<String> districts = ['Mulyorejo', 'Gubeng', 'Sukolilo', 'Rungkut'];
   final List<String> subdistricts = ['Mulyorejo', 'Kalijudan', 'Manyar Sabrangan', 'Kejawan Putih'];
   
-  // Time selection variables
   TimeOfDay selectedTime = const TimeOfDay(hour: 14, minute: 0);
 
   @override
@@ -59,7 +56,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
+            Navigator.pop(context);
           },
         ),
         title: const Text(
@@ -259,9 +256,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
     );
   }
 
-  // Method to show address form
   Future<void> _showAddressForm(BuildContext context) async {
-    // Create temporary variables to store form values
     String tempProvince = selectedProvince;
     String tempCity = selectedCity;
     String tempDistrict = selectedDistrict;
@@ -430,7 +425,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            // Update address values
                             setState(() {
                               selectedProvince = tempProvince;
                               selectedCity = tempCity;
@@ -438,7 +432,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                               selectedSubdistrict = tempSubdistrict;
                               detailAddress = tempDetailAddress;
                               
-                              // Update address display
                               address = '$detailAddress, Kecamatan $selectedDistrict, Kelurahan $selectedSubdistrict';
                             });
                             Navigator.pop(context);
@@ -466,7 +459,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
     );
   }
 
-  // Helper method to build dropdown fields
   Widget _buildDropdownField(
     String label,
     String value,
@@ -527,7 +519,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
     );
   }
 
-  // Method to show time picker
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
@@ -551,7 +542,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
       setState(() {
         selectedTime = pickedTime;
         
-        // Format time for display
         final hour = selectedTime.hour.toString().padLeft(2, '0');
         final minute = selectedTime.minute.toString().padLeft(2, '0');
         time = '$hour.$minute';

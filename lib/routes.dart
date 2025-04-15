@@ -1,4 +1,3 @@
-// lib/routes.dart
 import 'package:flutter/material.dart';
 
 import './SplashScreen/splash_screen.dart';

@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../SetorSampah/riwayat_setor_sampah.dart';
 import '../SetorSampah/pilih_bank_sampah.dart';
-import '../KenaliSampah/kenali_sampah.dart'; // Add import for Kenali Sampah
-import '../Artikel/artikel.dart'; // Add import for Artikel
+import '../KenaliSampah/kenali_sampah.dart'; 
+import '../Artikel/artikel.dart';
 
 final List<Map<String, String>> wasteBankData = [
   {
@@ -45,7 +45,7 @@ class Beranda extends StatelessWidget {
                   backgroundImage: AssetImage('assets/maskot.png'),
                   backgroundColor: Color(0xFFA3D1C6),
                 ),
-                SizedBox(width: 10), // Jarak antara avatar dan teks
+                SizedBox(width: 10), 
                 Expanded(
                   child: Text.rich(
                     TextSpan(
@@ -61,7 +61,7 @@ class Beranda extends StatelessWidget {
                           text: 'Trisna!',
                           style: GoogleFonts.montserrat(
                             fontSize: 26,
-                            fontWeight: FontWeight.bold, // Membuat "Trisna" menjadi bold
+                            fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
                         ),
@@ -164,7 +164,6 @@ class Beranda extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      // Navigate to PilihBankSampah page
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -204,7 +203,6 @@ class Beranda extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      // Navigate to KenaliSampah page
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -286,7 +284,7 @@ class Beranda extends StatelessWidget {
                               distance: wasteBank['distance']!,
                               imagePath: wasteBank['imagePath']!,
                             ),
-                            SizedBox(height: 10), // Jarak antar item
+                            SizedBox(height: 10), 
                           ],
                         );
                       },
@@ -319,7 +317,7 @@ class Beranda extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12.0),
                                   child: Image.asset(
-                                    'assets/default-bank-sampah.png', // Replace with your actual image path
+                                    'assets/default-bank-sampah.png', 
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -329,7 +327,6 @@ class Beranda extends StatelessWidget {
                                 child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      // Title
                                       const Text(
                                         'WasteWise: Inovasi Aplikasi Bank Sampah untuk Lingkungan Lebih Bersih',
                                         style: TextStyle(
@@ -340,13 +337,11 @@ class Beranda extends StatelessWidget {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       
-                                      // Read More Button
                                       Align(
                                         alignment: Alignment.bottomRight,
                                         child:   
                                           ElevatedButton(
                                             onPressed: () {
-                                              // Navigate to Artikel page
                                               Navigator.push(
                                                 context,
                                                 PageRouteBuilder(

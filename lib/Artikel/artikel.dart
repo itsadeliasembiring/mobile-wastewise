@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_wastewise/Artikel/detail_artikel.dart';
-import 'package:mobile_wastewise/KenaliSampah/kenali_sampah.dart'; // Import for KenaliSampah
+import 'package:mobile_wastewise/KenaliSampah/kenali_sampah.dart';
 
 class Artikel extends StatelessWidget {
   final List<Map<String, String>> artikelList = [
@@ -53,7 +53,6 @@ class Artikel extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         children: [
-          // Redesigned Kenali Sampah Card
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -85,7 +84,6 @@ class Artikel extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  // Decorative circles
                   Positioned(
                     top: -15,
                     right: -15,
@@ -111,12 +109,10 @@ class Artikel extends StatelessWidget {
                     ),
                   ),
                   
-                  // Main Content
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: Row(
                       children: [
-                        // Left section with icon
                         Container(
                           width: 80,
                           height: 80,
@@ -139,7 +135,6 @@ class Artikel extends StatelessWidget {
                         ),
                         SizedBox(width: 20),
                         
-                        // Right section with text
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +203,6 @@ class Artikel extends StatelessWidget {
             ),
           ),
           
-          // Section Divider
           Padding(
             padding: EdgeInsets.only(bottom: 16),
             child: Row(
@@ -241,7 +235,6 @@ class Artikel extends StatelessWidget {
             ),
           ),
           
-          // Existing Article Cards
           ...List.generate(
             artikelList.length,
             (index) {

@@ -28,6 +28,18 @@ class PointsProvider with ChangeNotifier {
 
   Future<void> donatePoints(String title, int points) async {
     try {
+      await Future.delayed(Duration(milliseconds: 500));
+      
+      _totalPoints -= points;
+      _transactions.insert(0, Transaction(
+        type: 'Donasi',
+        title: title,
+        points: -points,
+        dateTime: DateTime.now(),
+      ));
+      notifyListeners();
+      
+      /* actual HTTP request 
       final response = await http.post(
         Uri.parse('https://api.example.com/donate'),
         body: json.encode({
@@ -49,6 +61,7 @@ class PointsProvider with ChangeNotifier {
       } else {
         throw Exception('Gagal melakukan donasi');
       }
+      */
     } catch (e) {
       throw Exception('Error: $e');
     }
@@ -56,6 +69,19 @@ class PointsProvider with ChangeNotifier {
 
   Future<void> exchangePoints(String title, int points) async {
     try {
+      await Future.delayed(Duration(milliseconds: 500));
+      
+      _totalPoints -= points;
+      _transactions.insert(0, Transaction(
+        type: 'Barang Ecofriendly',
+        title: title,
+        points: -points,
+        dateTime: DateTime.now(),
+        redemptionCode: _generateRedemptionCode(),
+      ));
+      notifyListeners();
+      
+      /* actual HTTP request 
       final response = await http.post(
         Uri.parse('https://api.example.com/exchange'),
         body: json.encode({
@@ -78,6 +104,7 @@ class PointsProvider with ChangeNotifier {
       } else {
         throw Exception('Gagal melakukan penukaran');
       }
+      */
     } catch (e) {
       throw Exception('Error: $e');
     }

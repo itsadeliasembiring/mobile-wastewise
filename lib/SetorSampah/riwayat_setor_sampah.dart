@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_wastewise/SetorSampah/pilih_bank_sampah.dart';
 import 'detail_setor_sampah.dart';
-import './pilih_bank_sampah.dart';
 
 void main() {
   runApp(const RiwayatSetorSampah());
@@ -40,40 +39,50 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
     WasteCollection(
       bankName: 'Bank Sampah Wiyung',
       date: '2 Februari 2025',
-      time: '7:30 WIB',
+      time: '07:30 WIB',
       weight: 5,
       service: 'Jemput',
       status: 'Selesai',
       points: 100,
     ),
     WasteCollection(
-      bankName: 'Bank Sampah Wiyung',
-      date: '2 Februari 2025',
-      time: '7:30 WIB',
-      weight: 5,
-      service: 'Jemput',
-      status: 'Selesai',
-      points: 100,
+      bankName: 'Bank Sampah Wonokromo',
+      date: '5 Februari 2025',
+      time: '09:00 WIB',
+      weight: 3,
+      service: 'Antar',
+      status: 'Menunggu Verifikasi',
+      points: 65,
     ),
     WasteCollection(
-      bankName: 'Bank Sampah Wiyung',
-      date: '2 Februari 2025',
-      time: '7:30 WIB',
-      weight: 5,
+      bankName: 'Bank Sampah Rungkut',
+      date: '10 Februari 2025',
+      time: '08:15 WIB',
+      weight: 6,
       service: 'Jemput',
-      status: 'Selesai',
-      points: 100,
+      status: 'Diproses',
+      points: 130,
     ),
     WasteCollection(
-      bankName: 'Bank Sampah Wiyung',
-      date: '2 Februari 2025',
-      time: '7:30 WIB',
-      weight: 5,
+      bankName: 'Bank Sampah Keputih',
+      date: '15 Februari 2025',
+      time: '10:00 WIB',
+      weight: 2,
+      service: 'Antar',
+      status: 'Selesai',
+      points: 40,
+    ),
+    WasteCollection(
+      bankName: 'Bank Sampah Lakarsantri',
+      date: '20 Februari 2025',
+      time: '07:45 WIB',
+      weight: 4,
       service: 'Jemput',
       status: 'Selesai',
-      points: 100,
+      points: 95,
     ),
   ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +119,6 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
                             color: Colors.amber,
                             shape: BoxShape.circle,
                           ),
-                          // child: const Icon(Icons.star, color: Colors.white, size: 16),
                           child:  Image.asset(
                                 'assets/poin.png',
                                 width: 16,
@@ -218,7 +226,6 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
               ),
             ),
 
-            // Collection History List
             Expanded(
               child: ListView.builder(
                 itemCount: collections.length,
@@ -234,7 +241,6 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Header with bank name and points
                         Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Row(
@@ -311,7 +317,6 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
                           ),
                         ),
 
-                        // Details
                         Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Row(
@@ -379,10 +384,9 @@ class _RiwayatSetorPageState extends State<RiwayatSetorPage> {
                                 ),
                               ),
                               SizedBox(
-                                height: 30, // Atur tinggi sesuai kebutuhan
+                                height: 30,
                                 child: OutlinedButton(
                                   onPressed: () {
-                                    // Navigate to detail page when detail button is clicked
                                     Navigator.pushNamed(context, '/detail');
                                   },
                                   style: OutlinedButton.styleFrom(

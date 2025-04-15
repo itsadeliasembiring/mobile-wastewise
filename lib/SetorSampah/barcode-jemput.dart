@@ -274,7 +274,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
+            Navigator.pop(context);
           },
         ),
         title: const Text(
@@ -330,7 +330,6 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                           ),
                         ),
                         
-                        // Show QR code if one exists
                         if (scannedBarcode.isNotEmpty && !_isScanning)
                           Container(
                             width: 260,
@@ -400,7 +399,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12), // Jarak antar tombol
+                  const SizedBox(height: 12), 
                   ElevatedButton(
                     onPressed: openWhatsAppChat,
                     style: ElevatedButton.styleFrom(

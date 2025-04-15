@@ -1,9 +1,41 @@
 import 'package:flutter/material.dart';
 import './riwayat_poin.dart';
 import './detail_donasi.dart';
+import 'dart:math';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import '../Providers/points.provider.dart';
+
+class Transaction {
+  final String type;
+  final String title;
+  final int points;
+  final DateTime dateTime;
+  final String? redemptionCode; 
+
+  Transaction({
+    required this.type,
+    required this.title,
+    required this.points,
+    required this.dateTime,
+    this.redemptionCode, 
+  });
+}
+
+class Donation {
+  final String title;
+  final String address;
+  final String description;
+  final String imageAsset;
+  final int totalDonation;
+
+  Donation({
+    required this.title,
+    required this.address,
+    required this.description,
+    required this.imageAsset,
+    required this.totalDonation,
+  });
+}
 
 class EcoItem {
   final String title;
@@ -26,7 +58,11 @@ class TukarPoin extends StatefulWidget {
 
 class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int totalPoints = 308;
+  // List to store transaction history
+  List<Transaction> transactions = [];
 
+  // List of donation data
   final List<Donation> _donations = [
     Donation(
       title: "Panti Asuhan Harapan Sejahtera",
@@ -55,6 +91,15 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    
+    transactions = [
+      Transaction(
+        type: "Donasi",
+        title: "Panti Asuhan Harapan Sejahtera",
+        points: -100,
+        dateTime: DateTime(2025, 2, 2, 7, 30),
+      ),
+    ];
   }
 
   @override
@@ -65,109 +110,102 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PointsProvider>(
-      builder: (context, pointsProvider, child) {
-        return Scaffold(
-          backgroundColor: const Color(0xFFF5F6FA),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F6FA),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Tukar Poin',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF3D8D7A)),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFA3D1C6),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(2),
-                              decoration: const BoxDecoration(color: Colors.amber, shape: BoxShape.circle),
-                              child: Image.asset('assets/poin.png', width: 16, height: 16),
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              "${pointsProvider.totalPoints} Poin",
-                              style: const TextStyle(color: Color(0xFF3D8D7A), fontWeight: FontWeight.w500, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  const Text(
+                    'Tukar Poin',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF3D8D7A)),
                   ),
-                  const SizedBox(height: 16),
                   Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
+                      color: const Color(0xFFA3D1C6),
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                      boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 5)],
                     ),
-                    child: SizedBox(
-                      height: 40,
-                      child: TabBar(
-                        controller: _tabController,
-                        tabs: const [Tab(text: 'Tukar Poin'), Tab(text: 'Riwayat Tukar')],
-                        labelColor: Colors.white,
-                        unselectedLabelColor: Colors.black,
-                        indicator: BoxDecoration(
-                          color: const Color(0xFF3D8D7A),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        dividerColor: Colors.transparent,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
+                    child: Row(
                       children: [
-                        _buildTukarPoinTab(pointsProvider),
-                        RiwayatPoin(
-                          totalPoints: pointsProvider.totalPoints,
-                          transactions: pointsProvider.transactions,
+                        Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: const BoxDecoration(color: Colors.amber, shape: BoxShape.circle),
+                          child: Image.asset('assets/poin.png', width: 16, height: 16),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          "$totalPoints Poin",
+                          style: const TextStyle(color: Color(0xFF3D8D7A), fontWeight: FontWeight.w500, fontSize: 16),
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                  boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 5)],
+                ),
+                child: SizedBox(
+                  height: 40,
+                  child: TabBar(
+                    controller: _tabController,
+                    tabs: const [Tab(text: 'Tukar Poin'), Tab(text: 'Riwayat Tukar')],
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.black,
+                    indicator: BoxDecoration(
+                      color: const Color(0xFF3D8D7A),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    dividerColor: Colors.transparent,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildTukarPoinTab(),
+                    RiwayatPoin(totalPoints: totalPoints, transactions: transactions),
+                  ],
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
-  Widget _buildTukarPoinTab(PointsProvider pointsProvider) {
+  Widget _buildTukarPoinTab() {
     return ListView(
       children: [
         const Text('Donasi', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF3D8D7A))),
         const SizedBox(height: 16),
         ..._donations.map((donation) => Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: _buildDonationItem(donation, pointsProvider),
+              child: _buildDonationItem(donation),
             )),
         const SizedBox(height: 24),
         const Text('Barang Ramah Lingkungan', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF3D8D7A))),
         const SizedBox(height: 16),
-        ..._ecoItems.map((item) => _buildEcoItem(item, pointsProvider)),
+        ..._ecoItems.map((item) => _buildEcoItem(item)),
       ],
     );
   }
 
-  Widget _buildDonationItem(Donation donation, PointsProvider pointsProvider) {
+  Widget _buildDonationItem(Donation donation) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -213,21 +251,26 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
                     Navigator.push(
                       context,
                       MaterialPageRoute(
+                        // builder: (context) => DetailDonasi(
+                        //   donation: donation,
+                        //   addTransaction: (transaction) {
+                        //     setState(() {
+                        //       // Decrease user's points (transaction.points is negative, so we add it)
+                        //       totalPoints += transaction.points;
+                              
+                        //       // Add donation transaction to history
+                        //       transactions.insert(0, transaction);
+                        //     });
+                        //   },
+                        // ),
                         builder: (context) => DetailDonasi(
                           donation: donation,
-                          totalPoints: pointsProvider.totalPoints,
-                          addTransaction: (transaction) async {
-                            try {
-                            
-                              await pointsProvider.donatePoints(
-                                transaction.title, 
-                                -transaction.points,
-                              );   
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Gagal melakukan donasi: $e'), backgroundColor: Colors.red),
-                              );
-                            }
+                          totalPoints: totalPoints, // ✅ tambahkan ini
+                          addTransaction: (transaction) {
+                            setState(() {
+                              totalPoints += transaction.points;
+                              transactions.insert(0, transaction);
+                            });
                           },
                         ),
                       ),
@@ -250,7 +293,7 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
     );
   }
 
-  Widget _buildEcoItem(EcoItem item, PointsProvider pointsProvider) {
+  Widget _buildEcoItem(EcoItem item) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
@@ -295,7 +338,7 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
             ),
           ),
           ElevatedButton(
-            onPressed: () => _showTukarDialog(item.title, item.points, pointsProvider),
+            onPressed: () => _showTukarDialog(item.title, item.points),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: const Color(0xFF609966),
@@ -310,7 +353,7 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
     );
   }
 
-  void _showTukarDialog(String title, int points, PointsProvider pointsProvider) {
+  void _showTukarDialog(String title, int points) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -322,25 +365,31 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Batal', style: TextStyle(color: Colors.grey))),
           TextButton(
-            onPressed: () async {
+            onPressed: () {
               Navigator.pop(context);
-              if (pointsProvider.totalPoints >= points) {
-                try {
-                  await pointsProvider.exchangePoints(title, points);
-                  final latestTransaction = pointsProvider.transactions.first;
-                  
-                  if (latestTransaction.redemptionCode != null) {
-                    _showRedemptionCodeBottomSheet(title, points, latestTransaction.redemptionCode!);
-                  }
-                  
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Berhasil menukar poin untuk $title'), backgroundColor: Color(0xFF3D8D7A)),
-                  );
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Gagal menukar poin: $e'), backgroundColor: Colors.red),
-                  );
-                }
+              if (totalPoints >= points) {
+                // Generate a random redemption code
+                final String redemptionCode = _generateRedemptionCode();
+                
+                setState(() {
+                  totalPoints -= points;
+
+                  // Add transaction to history with redemption code
+                  transactions.insert(0, Transaction(
+                    type: 'Barang Ecofriendly',
+                    title: title,
+                    points: -points,
+                    dateTime: DateTime.now(),
+                    redemptionCode: redemptionCode, // Include the redemption code
+                  ));
+                });
+                
+                // Show bottom sheet with redemption code
+                _showRedemptionCodeBottomSheet(title, points, redemptionCode);
+                
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Berhasil menukar poin untuk $title'), backgroundColor: Color(0xFF3D8D7A)),
+                );
               } else {
                 showDialog(
                   context: context,
@@ -380,6 +429,25 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
         ],
       ),
     );
+  }
+
+  // Generate a random alphanumeric redemption code
+  String _generateRedemptionCode() {
+    const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final Random random = Random();
+    
+    // Generate a code in format: XXXX-XXXX-XXXX
+    String part1 = '';
+    String part2 = '';
+    String part3 = '';
+    
+    for (int i = 0; i < 4; i++) {
+      part1 += chars[random.nextInt(chars.length)];
+      part2 += chars[random.nextInt(chars.length)];
+      part3 += chars[random.nextInt(chars.length)];
+    }
+    
+    return '$part1-$part2-$part3';
   }
 
   void _showRedemptionCodeBottomSheet(String title, int points, String code) {
@@ -490,6 +558,7 @@ class _TukarPoinState extends State<TukarPoin> with SingleTickerProviderStateMix
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
+                          // Navigate to history tab
                           _tabController.animateTo(1);
                         },
                         style: ElevatedButton.styleFrom(

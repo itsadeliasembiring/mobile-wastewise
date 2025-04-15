@@ -91,6 +91,7 @@ class _RiwayatPoinState extends State<RiwayatPoin> {
             final date = dateFormatter.format(transaction.dateTime);
             final time = timeFormatter.format(transaction.dateTime) + ' WIB';
             
+            // Check if this transaction has a redemption code
             final redemptionCode = transaction.redemptionCode;
             
             return _buildHistoryItem(

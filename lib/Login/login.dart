@@ -46,7 +46,7 @@ class _MasukState extends State<Masuk> {
     // print('Email: $email');
     // print('Password: $password');
 
-    if (email == 'adeltrisna@gmail.com' && password == 'password123') {
+    if (email == 'wastewise@gmail.com' && password == '123456') {
       ScaffoldMessenger.of(context).showSnackBar(         
         SnackBar(
           backgroundColor: Color(0xFF3D8D7A),

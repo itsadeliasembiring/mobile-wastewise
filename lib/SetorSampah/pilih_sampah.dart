@@ -18,7 +18,7 @@ class PilihSampah extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
+            Navigator.pop(context); 
           },
         ),
         title: const Text(
@@ -45,7 +45,7 @@ class WasteCollectionPage extends StatefulWidget {
 
 class _WasteCollectionPageState extends State<WasteCollectionPage> {
   int totalPoints = 308;
-  int _selectedTabIndex = 0; // Define the selected tab index
+  int _selectedTabIndex = 0; 
   Map<String, double> wasteQuantities = {
     'Kertas': 0,
     'Plastik': 0,
@@ -89,7 +89,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
     super.initState();
     for (var wasteType in wasteTypes) {
       _controllers[wasteType.name] = TextEditingController(
-        text: '', // Initialize with an empty string
+        text: '',
       );
     }
   }
@@ -140,7 +140,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
       context,
       MaterialPageRoute(
         builder: (context) => DetailPilihSampah(
-          wasteQuantities: Map.from(wasteQuantities), // Pass a copy of the waste quantities
+          wasteQuantities: Map.from(wasteQuantities),
           wasteTypes: wasteTypes,
           totalWastePoints: totalWastePoints,
         ),
@@ -185,7 +185,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.asset(
-                                wasteType.image, // Use the main image path here
+                                wasteType.image,
                                 width: 64,
                                 height: 64,
                                 fit: BoxFit.cover,
@@ -237,9 +237,9 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
 
                             // Input Quantity with TextField
                             SizedBox(
-                              width: 60, // Input width
+                              width: 60,
                               child: TextField(
-                                keyboardType: TextInputType.numberWithOptions(decimal: true), // Allow decimal input
+                                keyboardType: TextInputType.numberWithOptions(decimal: true),
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                 controller: _controllers[wasteType.name],
@@ -247,10 +247,10 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                                   updateQuantity(wasteType.name, value);
                                 },
                                 inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Allow digits and decimal point
+                                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), 
                                 ],
                                 decoration: InputDecoration(
-                                  hintText: '0', // Set the placeholder to '0'
+                                  hintText: '0',
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -293,7 +293,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                               width: 20,
                               height: 20,
                             ),
-                            const SizedBox(width: 8), // Jarak antara gambar dan teks
+                            const SizedBox(width: 8),
                             Text(
                               '${totalWastePoints.toStringAsFixed(0)} Poin',
                               style: const TextStyle(
@@ -304,7 +304,7 @@ class _WasteCollectionPageState extends State<WasteCollectionPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4), // Jarak antara poin dan detail lainnya
+                        const SizedBox(height: 4), 
                         Text(
                           '$totalWasteTypes Jenis | ${totalQuantity % 1 == 0 ? totalQuantity.toInt() : totalQuantity.toStringAsFixed(2)} kg',
                           style: const TextStyle(
