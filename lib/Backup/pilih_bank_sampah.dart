@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../Menu/menu.dart';
-import './pilih_sampah.dart';
-import './riwayat_setor_sampah.dart';
+import '../SetorSampah/pilih_sampah.dart';
+import '../SetorSampah/riwayat_setor_sampah.dart';
 
 class PilihBankSampah extends StatelessWidget {
   const PilihBankSampah({Key? key}) : super(key: key);

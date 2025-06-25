@@ -1,551 +1,296 @@
 import 'package:flutter/material.dart';
-import './barcode-jemput.dart';
-
-void main() {
-  runApp(const PilihAlamat());
-}
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:provider/provider.dart';
+import '../SetorSampah/waste_type.dart';
+import '../SetorSampah/bank_sampah.dart'; // Pastikan Anda sudah membuat file model ini
+import '../Providers/points.provider.dart';
 
 class PilihAlamat extends StatelessWidget {
-  const PilihAlamat({Key? key}) : super(key: key);
+  final Map<String, double> wasteQuantities;
+  final List<WasteType> wasteTypes;
+  final double totalWastePoints;
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Waste Collection App',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-        fontFamily: 'Poppins',
-      ),
-      home: const WasteCollectionPage(),
-    );
-  }
-}
-
-class WasteCollectionPage extends StatefulWidget {
-  const WasteCollectionPage({Key? key}) : super(key: key);
-
-  @override
-  State<WasteCollectionPage> createState() => _WasteCollectionPageState();
-}
-
-class _WasteCollectionPageState extends State<WasteCollectionPage> {
-  final int points = 308;
-  bool isCurrentSector = true;
-  String address = 'Jl. Mulyorejo 67, Kecamatan Mulyorejo, Kelurahan Mulyorejo';
-  String time = '14.00';
-  
-  String selectedProvince = 'Jawa Timur';
-  String selectedCity = 'Surabaya';
-  String selectedDistrict = 'Mulyorejo';
-  String selectedSubdistrict = 'Mulyorejo';
-  String detailAddress = 'Jl. Mulyorejo 67';
-  
-  final List<String> provinces = ['Jawa Timur', 'Jawa Barat', 'Jawa Tengah', 'DKI Jakarta'];
-  final List<String> cities = ['Surabaya', 'Malang', 'Sidoarjo', 'Gresik'];
-  final List<String> districts = ['Mulyorejo', 'Gubeng', 'Sukolilo', 'Rungkut'];
-  final List<String> subdistricts = ['Mulyorejo', 'Kalijudan', 'Manyar Sabrangan', 'Kejawan Putih'];
-  
-  TimeOfDay selectedTime = const TimeOfDay(hour: 14, minute: 0);
+  const PilihAlamat({
+    Key? key,
+    required this.wasteQuantities,
+    required this.wasteTypes,
+    required this.totalWastePoints,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F6FA),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Pilih Alamat",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Color(0xFF3D8D7A),
-        elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
+        title: const Text("Atur Penjemputan"),
       ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: PilihAlamatPage(
+        wasteQuantities: wasteQuantities,
+        wasteTypes: wasteTypes,
+        totalWastePoints: totalWastePoints,
+      ),
+    );
+  }
+}
+
+class PilihAlamatPage extends StatefulWidget {
+  final Map<String, double> wasteQuantities;
+  final List<WasteType> wasteTypes;
+  final double totalWastePoints;
+
+  const PilihAlamatPage({
+    Key? key,
+    required this.wasteQuantities,
+    required this.wasteTypes,
+    required this.totalWastePoints,
+  }) : super(key: key);
+
+  @override
+  State<PilihAlamatPage> createState() => _PilihAlamatPageState();
+}
+
+class _PilihAlamatPageState extends State<PilihAlamatPage> {
+  final _supabase = Supabase.instance.client;
+  bool _isLoading = true;
+  bool _isSubmitting = false;
+
+  String _address = 'Memuat alamat...';
+  TimeOfDay _selectedTime = const TimeOfDay(hour: 14, minute: 0);
+  late TextEditingController _addressController;
+
+  List<BankSampah> _bankSampahList = [];
+  String? _selectedBankSampahId;
+
+  @override
+  void initState() {
+    super.initState();
+    _addressController = TextEditingController();
+    _loadInitialData();
+  }
+
+  @override
+  void dispose() {
+    _addressController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadInitialData() async {
+    await Future.wait([
+      _fetchUserAddress(),
+      _fetchBankSampahList(),
+    ]);
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _fetchUserAddress() async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) {
+      if (mounted) setState(() => _address = 'Gagal: Pengguna tidak login.');
+      return;
+    }
+    try {
+      final response = await _supabase.from('pengguna').select('detail_alamat').eq('id_pengguna', userId).single();
+      if (mounted) setState(() => _address = response['detail_alamat'] ?? 'Alamat belum diatur.');
+    } catch (e) {
+      if (mounted) setState(() => _address = 'Gagal memuat alamat.');
+    }
+  }
+
+  Future<void> _fetchBankSampahList() async {
+    try {
+      final response = await _supabase.from('bank_sampah').select('id_bank_sampah, nama_bank_sampah');
+      if (mounted) {
+        setState(() {
+          _bankSampahList = response.map((item) => BankSampah.fromJson(item)).toList();
+        });
+      }
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal memuat daftar bank sampah: $e'), backgroundColor: Colors.red));
+    }
+  }
+
+  Future<void> _ajukanPenjemputan() async {
+    if (_selectedBankSampahId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Silakan pilih bank sampah tujuan.'), backgroundColor: Colors.orange));
+      return;
+    }
+
+    setState(() { _isSubmitting = true; });
+
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sesi tidak valid, silakan login ulang.'), backgroundColor: Colors.red));
+      setState(() { _isSubmitting = false; });
+      return;
+    }
+
+    final List<Map<String, dynamic>> wasteItemsJson = widget.wasteTypes
+        .where((waste) => (widget.wasteQuantities[waste.name] ?? 0) > 0)
+        .map((waste) => {'id_sampah': waste.id, 'berat_kg': widget.wasteQuantities[waste.name]})
+        .toList();
+
+    try {
+      final result = await _supabase.rpc('handle_waste_deposit', params: {
+        'user_id_in': userId,
+        'bank_sampah_id_in': _selectedBankSampahId,
+        'jenis_layanan_id_in': 'L1',
+        'lokasi_pengumpulan_in': _address,
+        'waktu_pengumpulan_in': '${_selectedTime.hour}:${_selectedTime.minute}:00',
+        'waste_items': wasteItemsJson,
+      });
+
+      final newIdSetor = result['id_setor'];
+      if (mounted) {
+        context.read<PointsProvider>().fetchPoints(forceRefresh: true);
+        //Navigator.of(context).pushNamedAndRemoveUntil('/detail-setor', (route) => false, arguments: newIdSetor);
+        Navigator.of(context).pushNamed('/detail-setor', arguments: newIdSetor);
+      }
+
+    } on PostgrestException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal: ${e.message}'), backgroundColor: Colors.red));
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Terjadi kesalahan: $e'), backgroundColor: Colors.red));
+    } finally {
+      if (mounted) setState(() { _isSubmitting = false; });
+    }
+  }
+
+  Future<void> _showAddressForm(BuildContext context) async {
+    _addressController.text = _address;
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (ctx) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(ctx).viewInsets.bottom,
+            top: 20, left: 20, right: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Ubah Alamat Penjemputan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _addressController,
+                decoration: const InputDecoration(labelText: 'Detail Alamat Lengkap', border: OutlineInputBorder()),
+                maxLines: 3,
+                autofocus: true,
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _address = _addressController.text;
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: const Text('Simpan Alamat'),
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : ListView(
+                  padding: const EdgeInsets.all(16.0),
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                      child: Text(
-                        'Alamat Penjemputan',
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Color(0xFF3D8D7A)),
-                      ),
+                    const Text('1. Pilih Bank Sampah Tujuan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    DropdownButtonFormField<String>(
+                      value: _selectedBankSampahId,
+                      hint: const Text('Pilih bank sampah'),
+                      isExpanded: true,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
+                      items: _bankSampahList.map((bank) {
+                        return DropdownMenuItem(
+                          value: bank.id,
+                          child: Text(bank.name, overflow: TextOverflow.ellipsis),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedBankSampahId = value;
+                        });
+                      },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              color: Color(0xFF3D8D7A),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Lokasi Penjemputan',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    address,
-                                    style: TextStyle(
-                                      color: Colors.grey[700],
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                _showAddressForm(context);
-                              },
-                              style: TextButton.styleFrom(
-                                foregroundColor: const Color(0xFF3D8D7A),
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: const BorderSide(color: Color(0xFF3D8D7A)),
-                                ),
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              child: const Text('Ubah Alamat'),
-                            ),
-                          ],
-                        ),
+                    const SizedBox(height: 24),
+
+                    const Text('2. Atur Alamat & Waktu', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+
+                    Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        leading: Icon(Icons.location_on_outlined, color: Theme.of(context).primaryColor),
+                        title: const Text("Lokasi Penjemputan"),
+                        subtitle: Text(_address, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 15)),
+                        trailing: TextButton(onPressed: () => _showAddressForm(context), child: const Text("Ubah")),
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.access_time,
-                              color: Color(0xFF3D8D7A),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Waktu Penjemputan',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    time,
-                                    style: TextStyle(
-                                      color: Colors.grey[700],
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                _selectTime(context);
-                              },
-                              style: TextButton.styleFrom(
-                                foregroundColor: const Color(0xFF3D8D7A),
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: const BorderSide(color: Color(0xFF3D8D7A)),
-                                ),
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              child: const Text('Pilih Waktu'),
-                            ),
-                          ],
-                        ),
+                    Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        leading: Icon(Icons.access_time_outlined, color: Theme.of(context).primaryColor),
+                        title: const Text("Waktu Penjemputan"),
+                        subtitle: Text(_selectedTime.format(context), style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 15)),
+                        trailing: TextButton(onPressed: () async {
+                          final TimeOfDay? picked = await showTimePicker(context: context, initialTime: _selectedTime);
+                          if (picked != null && picked != _selectedTime) {
+                            setState(() { _selectedTime = picked; });
+                          }
+                        }, child: const Text("Ubah")),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ScanBarcode()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3D8D7A),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  minimumSize: const Size(double.infinity, 0),
-                ),
-                child: const Text(
-                  'Ajukan Penjemputan',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
-      ),
-    );
-  }
-
-  Future<void> _showAddressForm(BuildContext context) async {
-    String tempProvince = selectedProvince;
-    String tempCity = selectedCity;
-    String tempDistrict = selectedDistrict;
-    String tempSubdistrict = selectedSubdistrict;
-    String tempDetailAddress = detailAddress;
-
-    await showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setModalState) {
-            return Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-                top: 20,
-                left: 20,
-                right: 20,
-              ),
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.8,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Center(
-                    child: Text(
-                      'Ubah Alamat',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF3D8D7A),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildDropdownField(
-                            'Provinsi',
-                            tempProvince,
-                            provinces,
-                            (value) {
-                              setModalState(() {
-                                tempProvince = value!;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 15),
-                          _buildDropdownField(
-                            'Kota/Kabupaten',
-                            tempCity,
-                            cities,
-                            (value) {
-                              setModalState(() {
-                                tempCity = value!;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 15),
-                          _buildDropdownField(
-                            'Kecamatan',
-                            tempDistrict,
-                            districts,
-                            (value) {
-                              setModalState(() {
-                                tempDistrict = value!;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 15),
-                          _buildDropdownField(
-                            'Kelurahan',
-                            tempSubdistrict,
-                            subdistricts,
-                            (value) {
-                              setModalState(() {
-                                tempSubdistrict = value!;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 15),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Detail Alamat',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFormField(
-                                initialValue: tempDetailAddress,
-                                decoration: InputDecoration(
-                                  hintText: 'Masukkan detail alamat lengkap',
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[400],
-                                    fontSize: 14,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      color: Colors.grey[300]!,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      color: Colors.grey[300]!,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFF3D8D7A),
-                                    ),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 14,
-                                  ),
-                                ),
-                                maxLines: 3,
-                                onChanged: (value) {
-                                  setModalState(() {
-                                    tempDetailAddress = value;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: const Color(0xFF3D8D7A),
-                            side: const BorderSide(color: Color(0xFF3D8D7A)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                          child: const Text('Batal'),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              selectedProvince = tempProvince;
-                              selectedCity = tempCity;
-                              selectedDistrict = tempDistrict;
-                              selectedSubdistrict = tempSubdistrict;
-                              detailAddress = tempDetailAddress;
-                              
-                              address = '$detailAddress, Kecamatan $selectedDistrict, Kelurahan $selectedSubdistrict';
-                            });
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF3D8D7A),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                          child: const Text('Simpan'),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildDropdownField(
-    String label,
-    String value,
-    List<String> items,
-    Function(String?) onChanged,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 8),
-        DropdownButtonFormField<String>(
-          value: value,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-              ),
+        
+        Container(
+          padding: const EdgeInsets.all(16),
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: _isSubmitting ? null : _ajukanPenjemputan,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Color(0xFF3D8D7A),
-              ),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
-          ),
-          items: items.map((String item) {
-            return DropdownMenuItem<String>(
-              value: item,
-              child: Text(item),
-            );
-          }).toList(),
-          onChanged: onChanged,
-          icon: const Icon(
-            Icons.keyboard_arrow_down,
-            color: Color(0xFF3D8D7A),
+            child: _isSubmitting
+                ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
+                : const Text('Ajukan Penjemputan', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ),
         ),
       ],
     );
-  }
-
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: selectedTime,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Color(0xFF3D8D7A),
-            ),
-            buttonTheme: const ButtonThemeData(
-              textTheme: ButtonTextTheme.primary,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    
-    if (pickedTime != null && pickedTime != selectedTime) {
-      setState(() {
-        selectedTime = pickedTime;
-        
-        final hour = selectedTime.hour.toString().padLeft(2, '0');
-        final minute = selectedTime.minute.toString().padLeft(2, '0');
-        time = '$hour.$minute';
-      });
-    }
   }
 }
