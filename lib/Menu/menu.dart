@@ -24,7 +24,9 @@ class MenuStateProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(MenuStateProvider oldWidget) {
-    return menuState != oldWidget.menuState;
+      return menuState._currentIndex != oldWidget.menuState._currentIndex ||
+         menuState._setorSampahSubIndex != oldWidget.menuState._setorSampahSubIndex;
+    //return menuState != oldWidget.menuState;
   }
 }
 
@@ -74,7 +76,13 @@ class _MenuState extends State<Menu> {
   List<Widget> _getScreens() {
     return [
       Beranda(),
-      _getSetorSampahScreen(),
+      IndexedStack(
+        index: _setorSampahSubIndex,
+        children: [
+          PilihSampah(),
+          RiwayatSetorSampah(),
+        ],
+      ),
       Artikel(),
       TukarPoin(),
       Profil(),

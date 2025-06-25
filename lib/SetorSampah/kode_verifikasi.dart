@@ -222,7 +222,7 @@ class _HalamanKodeVerifikasiState extends State<HalamanKodeVerifikasi> {
             onPressed: _isCreatingCode ? null : _createDepositAndGetCode,
             child: _isCreatingCode
                 ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
-                : const Text('Buat Kode Verifikasi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                : const Text('Buat Kode Verifikasi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, backgroundColor: Color(0xFF3D8D7A))),
           ),
         ],
       ),
@@ -274,8 +274,15 @@ class _HalamanKodeVerifikasiState extends State<HalamanKodeVerifikasi> {
                 Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
               }
             },
-            child: const Text("Selesai"),
-          )
+            child: const Text(
+              "Selesai",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                backgroundColor: Color(0xFF3D8D7A),
+              ),
+            ),
+          ),
         ],
       ),
     );

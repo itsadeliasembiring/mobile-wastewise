@@ -4,11 +4,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../SetorSampah/waste_type.dart';
 import '../Providers/points.provider.dart';
 import 'detail_pilih_sampah.dart';
+import '../Menu/menu.dart';
 
 class PilihSampah extends StatefulWidget {
-  final Function(int)? onTabChanged; // Callback untuk mengubah tab
+  //final Function(int)? onTabChanged; // Callback untuk mengubah tab
   
-  const PilihSampah({Key? key, this.onTabChanged}) : super(key: key);
+  const PilihSampah({Key? key}) : super(key: key);
 
   @override
   State<PilihSampah> createState() => _PilihSampahState();
@@ -23,6 +24,10 @@ class _PilihSampahState extends State<PilihSampah> {
   void initState() {
     super.initState();
     _fetchWasteTypes();
+    // Tambahkan refresh points provider saat inisialisasi juga
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PointsProvider>().fetchPoints(forceRefresh: true);
+    });
   }
 
   Future<void> _fetchWasteTypes() async {
@@ -77,6 +82,16 @@ class _PilihSampahState extends State<PilihSampah> {
         ),
       ),
     );
+  }
+
+  Future<void> _refreshData() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    await context.read<PointsProvider>().fetchPoints(forceRefresh: true);
+    await _fetchWasteTypes();
   }
 
   @override
@@ -165,22 +180,21 @@ class _PilihSampahState extends State<PilihSampah> {
         children: [
           Expanded(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // Jika tab ini sudah aktif (indeks 0), panggil refresh
+                if (activeIndex == 0) {
+                  _refreshData();
+                }
+              },
               style: activeIndex == 0 ? activeTabStyle() : inactiveTabStyle(),
-              child: const Text('Setor Sekarang'),
+              child: const Text('Setor Sampah'),
             ),
           ),
           const SizedBox(width: 10),
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                // Gunakan callback untuk mengubah tab jika tersedia
-                if (widget.onTabChanged != null) {
-                  widget.onTabChanged!(1); // 1 untuk tab riwayat
-                } else {
-                  // Fallback jika tidak ada callback
-                  Navigator.pushNamed(context, '/riwayat-setor');
-                }
+                MenuStateProvider.of(context)?.changeSetorSampahTab(1);
               },
               style: activeIndex == 1 ? activeTabStyle() : inactiveTabStyle(),
               child: const Text('Riwayat Setor'),

@@ -187,14 +187,16 @@ class _RiwayatSetorSampahState extends State<RiwayatSetorSampah> {
                 MenuStateProvider.of(context)?.changeSetorSampahTab(0);
               },
               style: activeIndex == 0 ? activeTabStyle() : inactiveTabStyle(),
-              child: const Text('Setor Sekarang'),
+              child: const Text('Setor Sampah'),
             ),
           ),
           const SizedBox(width: 10),
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                if (activeIndex != 1) _refreshData();
+                if (activeIndex == 1) {
+                  _refreshData();
+                }
               },
               style: activeIndex == 1 ? activeTabStyle() : inactiveTabStyle(),
               child: const Text('Riwayat Setor'),
@@ -203,7 +205,7 @@ class _RiwayatSetorSampahState extends State<RiwayatSetorSampah> {
         ],
       ),
     );
-  }
+}
   
   Widget _buildSummaryCard(double totalKg, Color primaryColor) {
     return Padding(

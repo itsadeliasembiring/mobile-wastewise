@@ -149,7 +149,6 @@ class _PilihAlamatPageState extends State<PilihAlamatPage> {
       final newIdSetor = result['id_setor'];
       if (mounted) {
         context.read<PointsProvider>().fetchPoints(forceRefresh: true);
-        //Navigator.of(context).pushNamedAndRemoveUntil('/detail-setor', (route) => false, arguments: newIdSetor);
         Navigator.of(context).pushNamed('/detail-setor', arguments: newIdSetor);
       }
 
@@ -247,10 +246,16 @@ class _PilihAlamatPageState extends State<PilihAlamatPage> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        leading: Icon(Icons.location_on_outlined, color: Theme.of(context).primaryColor),
+                        leading: const Icon(Icons.location_on_outlined, color: Color(0xFF3D8D7A)), // Warna diubah
                         title: const Text("Lokasi Penjemputan"),
                         subtitle: Text(_address, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 15)),
-                        trailing: TextButton(onPressed: () => _showAddressForm(context), child: const Text("Ubah")),
+                        trailing: TextButton(
+                          onPressed: () => _showAddressForm(context),
+                          child: const Text(
+                            "Ubah",
+                            style: TextStyle(color: Color(0xFF3D8D7A)),
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -259,7 +264,7 @@ class _PilihAlamatPageState extends State<PilihAlamatPage> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        leading: Icon(Icons.access_time_outlined, color: Theme.of(context).primaryColor),
+                        leading: const Icon(Icons.access_time_outlined, color: Color(0xFF3D8D7A)), // Warna diubah
                         title: const Text("Waktu Penjemputan"),
                         subtitle: Text(_selectedTime.format(context), style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 15)),
                         trailing: TextButton(onPressed: () async {
@@ -280,8 +285,8 @@ class _PilihAlamatPageState extends State<PilihAlamatPage> {
           child: ElevatedButton(
             onPressed: _isSubmitting ? null : _ajukanPenjemputan,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Colors.white,
+              backgroundColor: const Color(0xFF3D8D7A), // Warna diubah
+              foregroundColor: Colors.white, // Warna teks agar kontras
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),

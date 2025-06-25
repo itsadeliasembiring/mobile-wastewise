@@ -47,7 +47,8 @@ dependencies:
   file_picker: ^10.1.9
   shared_preferences: ^2.5.3
   google_generative_ai: ^0.4.7
-  flutter_ai_toolkit: ^0.6.8
+  flutter_ai_toolkit: ^0.7.0
+  
   # cached_network_image: ^3.4.1
 
 dev_dependencies:
