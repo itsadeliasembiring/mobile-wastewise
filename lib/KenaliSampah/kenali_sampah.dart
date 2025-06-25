@@ -346,7 +346,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
           Expanded(
             child: LlmChatView(
               welcomeMessage:
-                  "Halo! Saya TrashScan Bot siap membantu Anda. Ajukan pertanyaan seputar sampah dan daur ulang, atau gunakan tombol 'Manual' di atas untuk melihat daftar sampah.",
+                  "Halo! Saya WasteWise Bot siap membantu Anda. Ajukan pertanyaan seputar sampah dan daur ulang, atau gunakan tombol 'Manual' di atas untuk melihat daftar sampah.",
              
               suggestions: const [
                 "Apa itu sampah organik?",
@@ -359,7 +359,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
                   model: "gemini-1.5-flash-latest",
                   apiKey: _apiKey,
                   systemInstruction: Content.system(
-                    "Anda adalah 'TrashScan Bot', asisten virtual yang ramah dan ahli dalam pengelolaan sampah, daur ulang, dan isu lingkungan di Indonesia. "
+                    "Anda adalah 'WasteWise Bot', asisten virtual yang ramah dan ahli dalam pengelolaan sampah, daur ulang, dan isu lingkungan di Indonesia. "
                     "Tugas Anda adalah menjawab pertanyaan pengguna HANYA yang berkaitan dengan topik-topik tersebut. "
                     "Jika pengguna bertanya di luar topik (misal: kesehatan, politik, resep masakan), jawab dengan sopan: 'Maaf, saya hanya bisa menjawab pertanyaan seputar pengelolaan sampah dan lingkungan.' "
                     "Berikan jawaban yang jelas, singkat, dan mudah dimengerti."
