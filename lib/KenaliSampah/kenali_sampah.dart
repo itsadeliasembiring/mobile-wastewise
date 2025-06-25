@@ -143,7 +143,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
                         style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xFF3D8D7A),
+                          color: const Color(0xFF3D7F5F),
                         ),
                       ),
                       IconButton(
@@ -164,7 +164,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
                   if (_loadingWasteData)
                     const Expanded(
                       child: Center(
-                        child: CircularProgressIndicator(color: Color(0xFF3D8D7A)),
+                        child: CircularProgressIndicator(color: Color(0xFF3D7F5F)),
                       ),
                     )
                   else if (wasteItems.isEmpty)
@@ -185,7 +185,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
                                 _loadWasteTypes().then((_) => setModalState(() {}));
                               },
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF3D8D7A)),
+                                  backgroundColor: const Color(0xFF3D7F5F)),
                               child: Text('Coba Lagi',
                                   style: GoogleFonts.poppins(color: Colors.white)),
                             ),
@@ -251,7 +251,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
                                       ],
                                     ),
                                   ),
-                                  const Icon(Icons.arrow_back_rounded,
+                                  const Icon(Icons.arrow_forward_ios,
                                       color: Colors.grey, size: 16),
                                 ],
                               ),
@@ -278,7 +278,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
       case 'biru': return Colors.blue;
       case 'putih': return Colors.grey.shade200;
       case 'hitam': return Colors.black87;
-      default: return const Color(0xFF3D8D7A);
+      default: return const Color(0xFF3D7F5F);
     }
   }
 
@@ -301,13 +301,13 @@ class _KenaliSampahState extends State<KenaliSampah> {
           "Kenali Sampah",
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
-            color: const Color(0xFF3D8D7A),
+            color: const Color(0xFF3D7F5F),
           ),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        //automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
@@ -318,11 +318,11 @@ class _KenaliSampahState extends State<KenaliSampah> {
             child: OutlinedButton(
               onPressed: _showManualInputSheet,
               style: OutlinedButton.styleFrom(
-                backgroundColor:Color(0xFF3D8D7A),
+                backgroundColor:Color(0xFF3D7F5F),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)
                 ),
-                side: const BorderSide(color: Color(0xFF3D8D7A)),
+                side: const BorderSide(color: Color(0xFF3D7F5F)),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
               child: Row(
@@ -381,7 +381,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
                   // user
                   userMessageStyle: UserMessageStyle(
                     decoration: BoxDecoration(
-                      color: Color(0xFF3D8D7A),
+                      color: Color(0xFF3D7F5F),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     textStyle: GoogleFonts.poppins(
@@ -392,7 +392,7 @@ class _KenaliSampahState extends State<KenaliSampah> {
 
                   suggestionStyle: SuggestionStyle(
                     decoration: BoxDecoration(
-                      color: Color(0xFF3D8D7A),
+                      color: Color(0xFF3D7F5F),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     textStyle: GoogleFonts.poppins(
